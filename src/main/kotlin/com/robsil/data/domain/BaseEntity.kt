@@ -1,14 +1,14 @@
 package com.robsil.data.domain
 
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
+import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.MappedSuperclass
-import javax.persistence.Version
+import javax.persistence.PrePersist
+import javax.persistence.PreUpdate
 
 @MappedSuperclass
 open class BaseEntity {
@@ -17,14 +17,22 @@ open class BaseEntity {
     @Column
     val id: Long? = null
 
-    @CreatedDate
     @Column(name = "created_date")
-    val createdDate: LocalDateTime? = null
+    @CreationTimestamp
+    var createdDate: LocalDateTime? = null
 
-    @LastModifiedDate
     @Column(name = "last_modified_date")
     var lastModifiedDate: LocalDateTime? = null
 
-    @Version
-    val version: Long? = null
+
+    @PrePersist
+    private fun prePersist() {
+        this.createdDate = LocalDateTime.now()
+        this.lastModifiedDate = LocalDateTime.now()
+    }
+
+    @PreUpdate
+    private fun preUpdate() {
+        this.lastModifiedDate = LocalDateTime.now()
+    }
 }

@@ -2,12 +2,10 @@ package com.robsil.config
 
 import com.robsil.data.repository.UserRepository
 import com.robsil.model.exception.NotFoundException
-import com.robsil.service.UserService
 import org.apache.logging.log4j.kotlin.logger
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -15,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.session.SessionRegistry
-import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -45,12 +42,7 @@ class SecurityConfig(
     }
 
     @Bean
-    fun sessionRegistry(): SessionRegistry {
-        return SessionRegistryImpl()
-    }
-
-    @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+    fun filterChain(http: HttpSecurity, sessionRegistry: SessionRegistry): SecurityFilterChain {
 
         val authenticationManagerBuilder = http.getSharedObject(
             AuthenticationManagerBuilder::class.java
@@ -70,7 +62,7 @@ class SecurityConfig(
         http
             .sessionManagement()
             .maximumSessions(5)
-            .sessionRegistry(sessionRegistry())
+            .sessionRegistry(sessionRegistry)
             .expiredUrl("/login")
 
         http
@@ -88,7 +80,7 @@ class SecurityConfig(
 
         http
             .authorizeRequests()
-            .antMatchers("/**")
+            .anyRequest()
             .authenticated()
 
 

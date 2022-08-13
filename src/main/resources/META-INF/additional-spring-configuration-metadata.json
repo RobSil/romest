@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "data.image.avatar.path",
+      "type": "java.lang.String",
+      "description": "File path for avatars."
+    },
+    {
+      "name": "data.image.photo.path",
+      "type": "java.lang.String",
+      "description": "File path for (post) photos."
+    }
+  ] }

@@ -18,8 +18,12 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	implementation("io.lettuce:lettuce-core")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.session:spring-session-data-redis:2.7.0")
+	implementation("org.springframework.boot:spring-boot-configuration-processor:2.7.2")
 	implementation("org.hibernate.validator:hibernate-validator:8.0.0.CR1")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -36,6 +40,10 @@ tasks.withType<KotlinCompile> {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "17"
 	}
+}
+
+tasks.named("compileKotlin") {
+	inputs.files(tasks.named("processResources"))
 }
 
 tasks.withType<Test> {

@@ -2,6 +2,7 @@ package com.robsil.service.impl
 
 import com.robsil.data.domain.Role
 import com.robsil.data.repository.RoleRepository
+import com.robsil.model.enum.ERole
 import com.robsil.model.exception.NotFoundException
 import com.robsil.service.RoleService
 import org.apache.logging.log4j.kotlin.logger
@@ -25,6 +26,13 @@ class RoleServiceImpl(
     override fun getByName(title: String): Role {
         return roleRepository.findByTitle(title) ?: run {
             log.info("getById: can't find role. Name: $title")
+            throw NotFoundException("ROLE_NOT_FOUND")
+        }
+    }
+
+    override fun getByName(eRole: ERole): Role {
+        return roleRepository.findByTitle(eRole.toString()) ?: run {
+            log.info("getById: can't find role. Name: ${eRole.toString()}")
             throw NotFoundException("ROLE_NOT_FOUND")
         }
     }
