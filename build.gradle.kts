@@ -19,9 +19,12 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
-	implementation("io.lettuce:lettuce-core")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.lettuce:lettuce-core")
+//	implementation("org.springframework.session:spring-session:1.3.5.RELEASE")
+//	implementation("org.springframework.session:spring-session-core:2.7.0")
 	implementation("org.springframework.session:spring-session-data-redis:2.7.0")
 	implementation("org.springframework.boot:spring-boot-configuration-processor:2.7.2")
 	implementation("org.hibernate.validator:hibernate-validator:8.0.0.CR1")

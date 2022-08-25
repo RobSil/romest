@@ -14,16 +14,13 @@ class RedisConfig {
     private val hostName = "localhost"
     private val port = 6379
 
-    @Bean
-    fun redisConnectionFactory(): LettuceConnectionFactory {
-        val redisConfig = RedisStandaloneConfiguration(hostName, port)
+//    @Bean
+//    fun redisConnectionFactory(): LettuceConnectionFactory {
+//        val redisConfig = RedisStandaloneConfiguration(hostName, port)
+//
+//        return LettuceConnectionFactory(redisConfig)
+//    }
 
-        return LettuceConnectionFactory(redisConfig)
-    }
-
-    fun smth() {
-        redisConnectionFactory().connection
-    }
 }
 
 fun <K, V> getRedisTemplate(rcf: RedisConnectionFactory): RedisTemplate<K, V> {

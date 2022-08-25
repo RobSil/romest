@@ -12,6 +12,11 @@ class InitController(
     private val initService: InitService,
 ) {
 
+    @GetMapping("/ping")
+    private fun pingPong(): String = "PONG"
+
+    @GetMapping("/securePing")
+    private fun securePingPong(): String = "SECURE_PONG"
 
     @GetMapping
     private fun init() {

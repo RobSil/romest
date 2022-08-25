@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.User
@@ -31,9 +32,15 @@ class SecurityConfig(
             return
         }
 
-//        web.ignoring()
-//            .antMatchers("/**")
-//        web.
+        web.ignoring()
+            .antMatchers(
+                "/api/v1/users/register",
+                "/api/login"
+            )
+
+        web
+            .debug(false)
+
     }
 
     @Bean
@@ -42,7 +49,9 @@ class SecurityConfig(
     }
 
     @Bean
-    fun filterChain(http: HttpSecurity, sessionRegistry: SessionRegistry): SecurityFilterChain {
+    fun filterChain(http: HttpSecurity,
+//                    sessionRegistry: SessionRegistry
+    ): SecurityFilterChain {
 
         val authenticationManagerBuilder = http.getSharedObject(
             AuthenticationManagerBuilder::class.java
@@ -60,14 +69,21 @@ class SecurityConfig(
 //        http.authenticationProvider(DaoAuthenticationProvider())
 
         http
+            .csrf()
+            .disable()
+
+        http
             .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
             .maximumSessions(5)
-            .sessionRegistry(sessionRegistry)
             .expiredUrl("/login")
+//            .sessionAuthenticationStrategy(SessionAuthe)
+//            .sessionRegistry(sessionRegistry)
 
         http
             .formLogin()
-            .loginProcessingUrl("/api/login")
+//            .loginPage("/api/login")
+            .loginProcessingUrl("/login")
             .successHandler { req, res, e -> res.status = 200 }
             .failureHandler { req, res, e ->
                 res.setStatus(401)
@@ -75,13 +91,29 @@ class SecurityConfig(
 
             .and()
             .logout()
-            .logoutUrl("/api/logout")
+            .logoutUrl("/logout")
+            .invalidateHttpSession(true)
+            .deleteCookies("SESSION", "JSESSIONID")
             .logoutSuccessHandler { req, res, e -> res.status = 200 }
+
+        http
+            .authorizeRequests()
+            .antMatchers(
+                "/api/v1/users/register",
+                "/api/login",
+                "/api/v1/init/ping"
+            )
+            .permitAll()
 
         http
             .authorizeRequests()
             .anyRequest()
             .authenticated()
+
+//        http
+//            .authorizeRequests()
+//            .anyRequest()
+//            .authenticated()
 
 
         return http.build()

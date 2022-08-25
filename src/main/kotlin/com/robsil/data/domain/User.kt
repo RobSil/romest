@@ -1,5 +1,6 @@
 package com.robsil.data.domain
 
+import com.robsil.model.enum.ERole
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
@@ -35,11 +36,18 @@ class User(
         joinColumns = arrayOf(JoinColumn(name = "user_id", referencedColumnName = "id")),
         inverseJoinColumns = arrayOf(JoinColumn(name = "role_id", referencedColumnName = "id"))
     )
-    var roles: MutableList<Role> = mutableListOf()
+    var roles: MutableSet<Role> = mutableSetOf()
 
-    fun addRole(role: Role): List<Role> {
+    fun addRole(role: Role): Set<Role> {
 
         roles.add(role)
+
+        return roles
+    }
+
+    fun removeRole(eRole: ERole): Set<Role> {
+
+        roles.removeIf { role -> role.title.equals(eRole.title, true) }
 
         return roles
     }
