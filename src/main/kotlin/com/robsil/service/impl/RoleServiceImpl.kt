@@ -37,8 +37,12 @@ class RoleServiceImpl(
         }
     }
 
+    fun saveEntity(role: Role): Role {
+        return roleRepository.save(role)
+    }
+
     @Transactional
     override fun create(title: String): Role {
-        return roleRepository.save(Role(title))
+        return saveEntity(Role(title))
     }
 }

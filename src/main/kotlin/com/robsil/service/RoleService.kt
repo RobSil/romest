@@ -12,4 +12,5 @@ interface RoleService {
     fun getByName(eRole: ERole): Role
 
     fun create(title: String): Role
+
 }

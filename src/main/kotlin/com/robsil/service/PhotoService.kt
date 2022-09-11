@@ -1,5 +1,7 @@
 package com.robsil.service
 
-interface PhotoService {
+import com.robsil.data.domain.Photo
 
+interface PhotoService {
+    fun saveEntity(photo: Photo): Photo
 }

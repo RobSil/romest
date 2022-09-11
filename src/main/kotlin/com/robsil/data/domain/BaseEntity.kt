@@ -15,7 +15,7 @@ open class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    val id: Long? = null
+    var id: Long? = null
 
     @Column(name = "created_date")
     @CreationTimestamp
@@ -24,7 +24,11 @@ open class BaseEntity {
     @Column(name = "last_modified_date")
     var lastModifiedDate: LocalDateTime? = null
 
+    constructor() {}
 
+    constructor(id: Long?) {
+        this.id = id
+    }
     @PrePersist
     private fun prePersist() {
         this.createdDate = LocalDateTime.now()

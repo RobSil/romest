@@ -31,7 +31,7 @@ class UserServiceImpl(
     override fun getById(id: Long): User {
         return userRepository.findById(id).orElse(null)
             ?: run {
-                log.info("userService getById: user not found. Email: $id")
+                log.info("userService getById: user not found. ID: $id")
                 throw NotFoundException("USER_NOT_FOUND")
             }
     }
@@ -49,12 +49,16 @@ class UserServiceImpl(
         return getByEmail(principal.name)
     }
 
+    fun saveEntity(user: User): User {
+        return userRepository.save(user)
+    }
+
     @Transactional
     override fun register(dto: UserRegisterDto): User {
         var user = User(dto.email, passwordEncoder.encode(dto.password), false)
         user.addRole(roleService.getByName(ERole.USER))
 
-        user = userRepository.save(user)
+        user = saveEntity(user)
 
         return user
     }

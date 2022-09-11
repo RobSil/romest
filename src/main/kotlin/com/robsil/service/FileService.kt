@@ -7,9 +7,9 @@ import java.nio.file.Path
 
 interface FileService {
 
-    fun save(path: Path, multipartFile: MultipartFile): File
+//    private fun save(path: Path, multipartFile: MultipartFile): File
 
     fun saveAvatar(fileName: String, fileType: FileType, multipartFile: MultipartFile): File
 
-    fun savePhoto(fileName: String, fileType: FileType, multipartFile: MultipartFile): File
+    fun savePhoto(fileName: String, multipartFile: MultipartFile): File
 }

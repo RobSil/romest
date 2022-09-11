@@ -6,7 +6,7 @@ data class UserRegisterDto(
 )
 
 data class UserInformationDto(
-    val id: Long,
+    val id: Long?,
     val email: String,
     val roles: Set<String>
 )

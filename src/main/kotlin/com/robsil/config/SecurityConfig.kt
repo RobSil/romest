@@ -34,8 +34,9 @@ class SecurityConfig(
 
         web.ignoring()
             .antMatchers(
-                "/api/v1/users/register",
-                "/api/login"
+                "/**"
+//                "/api/v1/users/register",
+//                "/api/login"
             )
 
         web
@@ -99,9 +100,10 @@ class SecurityConfig(
         http
             .authorizeRequests()
             .antMatchers(
-                "/api/v1/users/register",
-                "/api/login",
-                "/api/v1/init/ping"
+                "/**"
+//                "/api/v1/users/register",
+//                "/api/login",
+//                "/api/v1/init/ping"
             )
             .permitAll()
 
