@@ -38,6 +38,8 @@ dependencies {
 
 	implementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
 
+	implementation("net.datafaker:datafaker:1.5.0")
+
 
 	runtimeOnly("org.postgresql:postgresql")
 

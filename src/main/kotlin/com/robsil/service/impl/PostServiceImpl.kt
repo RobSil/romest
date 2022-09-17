@@ -16,6 +16,10 @@ class PostServiceImpl(
     private val boardService: BoardService,
 ) : PostService {
 
+    override fun getAll(): List<Post> {
+        return postRepository.findAll()
+    }
+
     override fun getPostsByBoard(boardId: Long): List<Post> {
 //        val board: Board = boardService.getById(boardId)
         val board: Board = Board(boardId, "", true)

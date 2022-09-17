@@ -21,8 +21,8 @@ class PhotoServiceFacade(
     val stringLength = 10
 
     @Transactional
-    override fun save(post: Post, boardName: String, multipartFile: MultipartFile): Photo {
-        val fileName = boardName.minimize() + "/" + getRandomString(stringLength)
+    override fun save(post: Post, minimizedBoardName: String, multipartFile: MultipartFile): Photo {
+        val fileName = minimizedBoardName + "/" + getRandomString(stringLength)
 
         val file: File = fileService.savePhoto(fileName, multipartFile)
 

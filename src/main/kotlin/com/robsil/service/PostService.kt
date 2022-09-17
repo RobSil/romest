@@ -6,6 +6,8 @@ import com.robsil.model.dto.PostCreateDto
 
 interface PostService {
 
+    fun getAll(): List<Post>
+
     fun getPostsByBoard(boardId: Long): List<Post>
 
     fun saveEntity(post: Post): Post

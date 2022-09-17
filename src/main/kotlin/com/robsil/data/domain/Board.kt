@@ -1,5 +1,6 @@
 package com.robsil.data.domain
 
+import com.robsil.util.minimize
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -12,13 +13,26 @@ class Board(
     @NotBlank
     val name: String,
 
+    @Column(name = "minimized_name")
+    @NotNull
+    @NotBlank
+    val minimizedName: String,
+
     @Column(name = "is_private")
     @NotNull
     val isPrivate: Boolean,
 
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "user_id", referencedColumnName = "id")
+//    val user: User,
+
 ) : BaseEntity() {
 
-    constructor(id: Long, name: String, isPrivate: Boolean) : this(name, isPrivate) {
+    constructor(id: Long, name: String, isPrivate: Boolean) : this(name, name.minimize(), isPrivate) {
+        this.id = id
+    }
+
+    constructor(id: Long, name: String, minimizedName: String, isPrivate: Boolean) : this(name, minimizedName, isPrivate) {
         this.id = id
     }
 

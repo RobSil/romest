@@ -1,13 +1,13 @@
 package com.robsil.service.impl
 
+import com.robsil.data.domain.Post
 import com.robsil.data.domain.User
 import com.robsil.data.repository.RoleRepository
 import com.robsil.data.repository.UserRepository
 import com.robsil.model.enum.ERole
-import com.robsil.service.FileService
-import com.robsil.service.RoleService
-import com.robsil.service.UserService
+import com.robsil.service.*
 import com.robsil.util.createDirectoryIfExists
+import net.datafaker.Faker
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -23,6 +23,8 @@ class InitService(
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder,
+    private val boardService: BoardService,
+    private val postService: PostService,
 
     @Value("\${data.image.avatar.path}")
     private val avatarPath: String,
@@ -68,5 +70,16 @@ class InitService(
         Files.createDirectories(Path.of(photoPath))
     }
 
+    fun generatePosts(count: Int, boardId: Long) {
+        val faker = Faker()
 
+        val board = boardService.getById(boardId)
+
+        for (i in 1..count) {
+//            val post = Post(faker.book().title(), faker.breakingBad().episode(), board)
+            val post = Post(faker.book().title(), faker.breakingBad().episode(), board)
+
+            postService.saveEntity(post)
+        }
+    }
 }

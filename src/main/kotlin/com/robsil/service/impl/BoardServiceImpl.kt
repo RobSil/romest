@@ -6,6 +6,7 @@ import com.robsil.data.repository.BoardRepository
 import com.robsil.model.dto.BoardCreateDto
 import com.robsil.model.exception.NotFoundException
 import com.robsil.service.BoardService
+import com.robsil.util.minimize
 import org.apache.logging.log4j.kotlin.logger
 import org.springframework.stereotype.Service
 
@@ -40,7 +41,7 @@ class BoardServiceImpl(
     }
 
     override fun create(dto: BoardCreateDto): Board {
-        var board: Board = Board(dto.name, dto.isPrivate)
+        var board: Board = Board(dto.name, dto.name.minimize(), dto.isPrivate)
 
         board = saveEntity(board)
 

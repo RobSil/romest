@@ -4,6 +4,7 @@ import com.robsil.service.impl.InitService
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -26,4 +27,7 @@ class InitController(
     @GetMapping("/redis")
     private fun testRedis() {
     }
+
+    @GetMapping("/generatePosts")
+    private fun generatePosts(@RequestParam count: Int, boardId: Long) = initService.generatePosts(count, boardId)
 }

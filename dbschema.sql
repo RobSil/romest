@@ -64,7 +64,8 @@ create table if not exists public.boards
     last_modified_date timestamp without time zone,
 
     name               character varying(64) not null,
-    is_private          bool                  not null,
+    minimized_name     character varying(64) not null,
+    is_private         bool                  not null,
 
     constraint boards_pkey primary key (id)
 );
