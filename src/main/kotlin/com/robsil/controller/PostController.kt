@@ -1,5 +1,6 @@
 package com.robsil.controller
 
+import com.robsil.data.domain.Post
 import com.robsil.model.dto.PostCreateDto
 import com.robsil.service.PostService
 import com.robsil.service.facade.PostServiceFacade
@@ -18,7 +19,11 @@ class PostController(
 ) {
 
     @GetMapping
-    fun getAll() = postService.getAll()
+    fun getAll(): List<Post> {
+        val posts: List<Post>  = postService.getAll()
+
+        return posts
+    }
 
     @PostMapping
     fun savePost(@RequestPart dto: PostCreateDto, @RequestPart file: MultipartFile) = postServiceFacade.savePost(dto, file)

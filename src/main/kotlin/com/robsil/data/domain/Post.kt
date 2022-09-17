@@ -17,7 +17,7 @@ class Post(
 //    @JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator::class)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "board_id", referencedColumnName = "id")
-    val board: Board
+    val board: Board,
 
 //    @OneToMany(mappedBy = "post")
 //    val photos: List<Photo>

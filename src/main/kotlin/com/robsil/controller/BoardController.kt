@@ -27,7 +27,11 @@ class BoardController(
     fun getAll() = boardService.getAll()
 
     @GetMapping("/{boardId}/posts")
-    fun getPostsByBoard(@PathVariable boardId: Long): List<Post> = postService.getPostsByBoard(boardId)
+    fun getPostsByBoard(@PathVariable boardId: Long): List<Post> {
+        val posts: List<Post> = postService.getPostsByBoard(boardId)
+
+        return posts
+    }
 
     @PostMapping
     fun create(@RequestBody dto: BoardCreateDto): SimpleBoardDto = boardService.create(dto).toSimpleDto()

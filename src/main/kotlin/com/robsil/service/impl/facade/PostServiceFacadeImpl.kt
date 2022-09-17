@@ -28,7 +28,7 @@ class PostServiceFacadeImpl(
 
         post = postService.saveEntity(post)
 
-        val photo: Photo = photoServiceFacade.save(post, board.name, multipartFile)
+        val photo: Photo = photoServiceFacade.save(post, board.minimizedName, multipartFile)
 
         return post
     }
