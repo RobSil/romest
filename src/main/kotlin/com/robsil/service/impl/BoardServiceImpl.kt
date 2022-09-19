@@ -9,8 +9,10 @@ import com.robsil.service.BoardService
 import com.robsil.util.minimize
 import org.apache.logging.log4j.kotlin.logger
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 class BoardServiceImpl(
     private val boardRepository: BoardRepository
 ) : BoardService {
@@ -40,8 +42,8 @@ class BoardServiceImpl(
         return boardRepository.save(board)
     }
 
-    override fun create(dto: BoardCreateDto): Board {
-        var board: Board = Board(dto.name, dto.name.minimize(), dto.isPrivate)
+    override fun create(dto: BoardCreateDto, user: User): Board {
+        var board: Board = Board(dto.name, dto.name.minimize(), dto.isPrivate, user)
 
         board = saveEntity(board)
 

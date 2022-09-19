@@ -1,5 +1,6 @@
 package com.robsil.data.domain
 
+import com.robsil.model.enum.StoringSource
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
@@ -14,6 +15,10 @@ class Photo(
     @Column
     @NotNull
     val path: String,
+
+    @Column
+    @NotNull
+    val storingSource: StoringSource,
 
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "id")

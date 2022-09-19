@@ -5,8 +5,10 @@ import com.robsil.data.repository.PropertyRepository
 import com.robsil.model.exception.NotFoundException
 import com.robsil.service.PropertyService
 import org.apache.logging.log4j.kotlin.logger
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-
+@Service
+@Transactional
 class PropertyServiceImpl(
     private val propertyRepository: PropertyRepository
 ) : PropertyService {

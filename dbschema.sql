@@ -67,7 +67,10 @@ create table if not exists public.boards
     minimized_name     character varying(64) not null,
     is_private         bool                  not null,
 
-    constraint boards_pkey primary key (id)
+    user_id            bigint                not null,
+
+    constraint boards_pkey primary key (id),
+    constraint fk_user foreign key (user_id) references public.users (id)
 );
 
 create table if not exists public.posts

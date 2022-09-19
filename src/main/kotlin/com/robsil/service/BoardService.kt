@@ -1,6 +1,7 @@
 package com.robsil.service
 
 import com.robsil.data.domain.Board
+import com.robsil.data.domain.User
 import com.robsil.model.dto.BoardCreateDto
 
 interface BoardService {
@@ -11,5 +12,5 @@ interface BoardService {
 
     fun getByName(name: String): Board
 
-    fun create(dto: BoardCreateDto): Board
+    fun create(dto: BoardCreateDto, user: User): Board
 }

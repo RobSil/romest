@@ -22,17 +22,17 @@ class Board(
     @NotNull
     val isPrivate: Boolean,
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    val user: User,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    val user: User,
 
 ) : BaseEntity() {
 
-    constructor(id: Long, name: String, isPrivate: Boolean) : this(name, name.minimize(), isPrivate) {
+    constructor(id: Long, name: String, isPrivate: Boolean, user: User) : this(name, name.minimize(), isPrivate, user) {
         this.id = id
     }
 
-    constructor(id: Long, name: String, minimizedName: String, isPrivate: Boolean) : this(name, minimizedName, isPrivate) {
+    constructor(id: Long, name: String, minimizedName: String, isPrivate: Boolean, user: User) : this(name, minimizedName, isPrivate, user) {
         this.id = id
     }
 

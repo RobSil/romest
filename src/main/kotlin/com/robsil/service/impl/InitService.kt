@@ -11,14 +11,15 @@ import net.datafaker.Faker
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 
 @Service
+@Transactional
 class InitService(
     private val roleService: RoleService,
-    private val fileService: FileService,
     private val userService: UserService,
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,

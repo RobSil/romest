@@ -14,6 +14,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
 	mavenCentral()
+	maven("https://jitpack.io")
 }
 
 dependencies {
@@ -39,6 +40,10 @@ dependencies {
 	implementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
 
 	implementation("net.datafaker:datafaker:1.5.0")
+
+	implementation("com.squareup.okhttp3:okhttp:4.10.0")
+//	platform("com.squareup.okio:okio:3.2.0")
+	implementation("com.github.imagekit-developer:imagekit-java:2.0.0")
 
 
 	runtimeOnly("org.postgresql:postgresql")

@@ -9,8 +9,10 @@ import com.robsil.model.dto.PostCreateDto
 import com.robsil.service.BoardService
 import com.robsil.service.PostService
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 class PostServiceImpl(
     private val postRepository: PostRepository,
     private val boardService: BoardService,
@@ -21,8 +23,7 @@ class PostServiceImpl(
     }
 
     override fun getPostsByBoard(boardId: Long): List<Post> {
-//        val board: Board = boardService.getById(boardId)
-        val board: Board = Board(boardId, "", true)
+        val board = boardService.getById(boardId)
 
         return postRepository.findAllByBoard(board)
     }

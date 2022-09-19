@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.security.Principal
 
 @Service
+@Transactional
 class UserServiceImpl(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
@@ -53,7 +54,6 @@ class UserServiceImpl(
         return userRepository.save(user)
     }
 
-    @Transactional
     override fun register(dto: UserRegisterDto): User {
         var user = User(dto.email, passwordEncoder.encode(dto.password), false)
         user.addRole(roleService.getByName(ERole.USER))

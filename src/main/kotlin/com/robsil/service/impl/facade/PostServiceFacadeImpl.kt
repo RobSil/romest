@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 
 @Service
+@Transactional
 class PostServiceFacadeImpl(
     private val postService: PostService,
 //    private val photoService: PhotoService,
@@ -20,7 +21,6 @@ class PostServiceFacadeImpl(
     private val boardService: BoardService
 ) : PostServiceFacade {
 
-    @Transactional
     override fun savePost(dto: PostCreateDto, multipartFile: MultipartFile): Post {
         val board: Board = boardService.getById(dto.boardId)
 

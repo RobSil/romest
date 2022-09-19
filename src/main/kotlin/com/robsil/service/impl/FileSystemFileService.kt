@@ -1,9 +1,13 @@
 package com.robsil.service.impl
 
 import com.robsil.model.enum.FileType
+import com.robsil.model.enum.StoringSource
+import com.robsil.model.image.ImageSaveResult
 import com.robsil.service.FileService
 import org.apache.logging.log4j.kotlin.logger
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Primary
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
@@ -11,6 +15,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 @Service
+@Profile("fileSystemFileService")
 class FileSystemFileService(
     @Value("\${data.image.avatar.path}")
     private val avatarPath: String,
@@ -33,11 +38,15 @@ class FileSystemFileService(
         return file
     }
 
-    override fun saveAvatar(fileName: String, fileType: FileType, multipartFile: MultipartFile): File {
-        return save(Path.of("$avatarPath/$fileName"), multipartFile)
+    override fun saveAvatar(folderPath: String, fileName: String, fileType: FileType, multipartFile: MultipartFile): File {
+        return save(Path.of("$avatarPath/$folderPath/$fileName.jpg"), multipartFile)
     }
 
-    override fun savePhoto(fileName: String, multipartFile: MultipartFile): File {
-        return save(Path.of("$photoPath/$fileName.jpg"), multipartFile)
+    override fun savePhoto(folderPath: String, fileName: String, multipartFile: MultipartFile): ImageSaveResult {
+        val fullPath = "$photoPath/$folderPath/$fileName.jpg"
+
+        val file = save(Path.of(fullPath), multipartFile)
+
+        return ImageSaveResult(fileName, fullPath, StoringSource.FILE_SYSTEM)
     }
 }
