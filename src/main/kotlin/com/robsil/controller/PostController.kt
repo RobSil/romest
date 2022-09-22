@@ -2,8 +2,10 @@ package com.robsil.controller
 
 import com.robsil.data.domain.Post
 import com.robsil.model.dto.PostCreateDto
+import com.robsil.model.dto.SimplePostDto
 import com.robsil.service.PostService
 import com.robsil.service.facade.PostServiceFacade
+import com.robsil.util.dtoFactories.toSimpleDto
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -26,5 +28,5 @@ class PostController(
     }
 
     @PostMapping
-    fun savePost(@RequestPart dto: PostCreateDto, @RequestPart file: MultipartFile) = postServiceFacade.savePost(dto, file)
+    fun savePost(@RequestPart dto: PostCreateDto, @RequestPart file: MultipartFile): SimplePostDto = postServiceFacade.savePost(dto, file).toSimpleDto()
 }

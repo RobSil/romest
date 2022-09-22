@@ -1,4 +1,4 @@
-package com.robsil.util
+package com.robsil.util.dtoFactories
 
 import com.robsil.data.domain.Board
 import com.robsil.model.dto.BoardDto

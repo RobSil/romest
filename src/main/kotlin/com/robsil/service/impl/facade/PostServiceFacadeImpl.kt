@@ -19,6 +19,9 @@ class PostServiceFacadeImpl(
     private val photoServiceFacade: PhotoServiceFacadeImpl,
     private val boardService: BoardService
 ) : PostServiceFacade {
+    override fun getAllByBoardId(boardId: Long): List<Post> {
+        TODO("Not yet implemented")
+    }
 
     override fun savePost(dto: PostCreateDto, multipartFile: MultipartFile): Post {
         val board: Board = boardService.getById(dto.boardId)

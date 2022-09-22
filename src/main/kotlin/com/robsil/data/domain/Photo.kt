@@ -1,11 +1,7 @@
 package com.robsil.data.domain
 
 import com.robsil.model.enum.StoringSource
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
-import javax.persistence.Table
+import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
@@ -17,6 +13,7 @@ class Photo(
     val path: String,
 
     @Column
+    @Enumerated(EnumType.STRING)
     @NotNull
     val storingSource: StoringSource,
 

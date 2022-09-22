@@ -109,6 +109,7 @@ create table if not exists public.photos
     last_modified_date timestamp without time zone,
 
     path               character varying(1024) not null,
+    storing_source     character varying(128)  not null,
     post_id            bigint                  not null,
 
     constraint photos_pkey primary key (id),

@@ -1,4 +1,4 @@
-package com.robsil.util
+package com.robsil.util.dtoFactories
 
 import com.robsil.data.domain.User
 import com.robsil.model.UserInformationDto

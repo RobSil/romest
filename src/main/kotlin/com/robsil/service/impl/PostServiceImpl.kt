@@ -39,4 +39,8 @@ class PostServiceImpl(
     override fun create(dto: PostCreateDto): Post {
         TODO("Not yet implemented")
     }
+
+    override fun deleteById(postId: Long) {
+        TODO("Not yet implemented")
+    }
 }

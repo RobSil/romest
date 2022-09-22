@@ -11,8 +11,7 @@ import com.robsil.service.BoardService
 import com.robsil.service.PostService
 import com.robsil.service.UserService
 import com.robsil.service.facade.BoardServiceFacade
-import com.robsil.util.toDto
-import com.robsil.util.toSimpleDto
+import com.robsil.util.dtoFactories.toSimpleDto
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

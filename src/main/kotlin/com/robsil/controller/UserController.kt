@@ -7,7 +7,7 @@ import com.robsil.model.UserRegisterDto
 import com.robsil.model.exception.ForbiddenException
 import com.robsil.service.SessionService
 import com.robsil.service.UserService
-import com.robsil.util.toInformationDto
+import com.robsil.util.dtoFactories.toInformationDto
 import org.apache.logging.log4j.kotlin.logger
 import org.springframework.session.Session
 import org.springframework.web.bind.annotation.DeleteMapping
