@@ -28,6 +28,10 @@ class PostServiceImpl(
         return postRepository.findAllByBoard(board)
     }
 
+    override fun getPostsByBoardId(boardId: Long): List<Post> {
+        return postRepository.findAllByBoardId(boardId)
+    }
+
     override fun saveEntity(post: Post): Post {
         return postRepository.save(post)
     }

@@ -7,6 +7,12 @@ data class BoardCreateDto(
     val isPrivate: Boolean
 )
 
+data class BoardSaveDto(
+    val id: Long,
+    val name: String,
+    val isPrivate: Boolean
+)
+
 data class SimpleBoardDto(
     val id: Long?,
     val name: String,

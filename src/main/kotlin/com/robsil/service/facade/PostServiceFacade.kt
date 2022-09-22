@@ -6,5 +6,7 @@ import org.springframework.web.multipart.MultipartFile
 
 interface PostServiceFacade {
 
+    fun getAllByBoardId(boardId: Long): List<Post>
+
     fun savePost(dto: PostCreateDto, multipartFile: MultipartFile): Post
 }

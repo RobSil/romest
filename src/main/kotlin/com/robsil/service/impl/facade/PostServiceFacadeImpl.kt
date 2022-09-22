@@ -5,7 +5,6 @@ import com.robsil.data.domain.Photo
 import com.robsil.data.domain.Post
 import com.robsil.model.dto.PostCreateDto
 import com.robsil.service.BoardService
-import com.robsil.service.PhotoService
 import com.robsil.service.PostService
 import com.robsil.service.facade.PostServiceFacade
 import org.springframework.stereotype.Service
@@ -17,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile
 class PostServiceFacadeImpl(
     private val postService: PostService,
 //    private val photoService: PhotoService,
-    private val photoServiceFacade: PhotoServiceFacade,
+    private val photoServiceFacade: PhotoServiceFacadeImpl,
     private val boardService: BoardService
 ) : PostServiceFacade {
 

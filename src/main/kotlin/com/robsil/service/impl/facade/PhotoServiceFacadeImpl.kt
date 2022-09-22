@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @Service
 @Transactional
-class PhotoServiceFacade(
+class PhotoServiceFacadeImpl(
     private val photoService: PhotoService,
     private val fileService: FileService
 ) : PhotoServiceFacade {

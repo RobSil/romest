@@ -4,8 +4,12 @@ import com.robsil.data.domain.Board
 import com.robsil.data.domain.User
 import com.robsil.data.repository.BoardRepository
 import com.robsil.model.dto.BoardCreateDto
+import com.robsil.model.dto.BoardSaveDto
+import com.robsil.model.exception.ExceptionMessages.USERS_DOESNT_MATCH
+import com.robsil.model.exception.ForbiddenException
 import com.robsil.model.exception.NotFoundException
 import com.robsil.service.BoardService
+import com.robsil.util.compareToOrElseThrow
 import com.robsil.util.minimize
 import org.apache.logging.log4j.kotlin.logger
 import org.springframework.stereotype.Service
@@ -48,5 +52,25 @@ class BoardServiceImpl(
         board = saveEntity(board)
 
         return saveEntity(board)
+    }
+
+    override fun save(dto: BoardSaveDto, user: User): Board {
+        var board = getById(dto.id)
+
+        board.user.id.compareToOrElseThrow(user.id, ForbiddenException(USERS_DOESNT_MATCH))
+
+        board.apply {
+            name = dto.name
+            isPrivate = dto.isPrivate
+        }
+
+        board = saveEntity(board)
+
+        return board
+    }
+
+    override fun deleteById(boardId: Long) {
+        // implement deleting posts?
+        boardRepository.deleteById(boardId)
     }
 }

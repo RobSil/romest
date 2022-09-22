@@ -11,7 +11,7 @@ class Board(
     @Column
     @NotNull
     @NotBlank
-    val name: String,
+    var name: String,
 
     @Column(name = "minimized_name")
     @NotNull
@@ -20,7 +20,7 @@ class Board(
 
     @Column(name = "is_private")
     @NotNull
-    val isPrivate: Boolean,
+    var isPrivate: Boolean,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
