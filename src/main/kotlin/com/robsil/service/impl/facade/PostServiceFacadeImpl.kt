@@ -3,10 +3,14 @@ package com.robsil.service.impl.facade
 import com.robsil.data.domain.Board
 import com.robsil.data.domain.Photo
 import com.robsil.data.domain.Post
+import com.robsil.data.domain.User
 import com.robsil.model.dto.PostCreateDto
+import com.robsil.model.exception.ExceptionMessages
+import com.robsil.model.exception.ForbiddenException
 import com.robsil.service.BoardService
 import com.robsil.service.PostService
 import com.robsil.service.facade.PostServiceFacade
+import com.robsil.util.compareToOrElseThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -19,8 +23,14 @@ class PostServiceFacadeImpl(
     private val photoServiceFacade: PhotoServiceFacadeImpl,
     private val boardService: BoardService
 ) : PostServiceFacade {
-    override fun getAllByBoardId(boardId: Long): List<Post> {
-        TODO("Not yet implemented")
+    override fun getAllByBoardId(boardId: Long, user: User): List<Post> {
+        val board = boardService.getById(boardId)
+
+        if (board.isPrivate) {
+            board.user.id.compareToOrElseThrow(user.id, ForbiddenException(ExceptionMessages.USERS_DOESNT_MATCH))
+        }
+
+        return postService.getPostsByBoardId(board.id!!)
     }
 
     override fun savePost(dto: PostCreateDto, multipartFile: MultipartFile): Post {

@@ -2,15 +2,13 @@ package com.robsil.controller
 
 import com.robsil.data.domain.Board
 import com.robsil.data.domain.Post
-import com.robsil.model.dto.BoardCreateDto
-import com.robsil.model.dto.BoardDto
-import com.robsil.model.dto.BoardSaveDto
-import com.robsil.model.dto.SimpleBoardDto
+import com.robsil.model.dto.*
 import com.robsil.model.exception.ForbiddenException
 import com.robsil.service.BoardService
 import com.robsil.service.PostService
 import com.robsil.service.UserService
 import com.robsil.service.facade.BoardServiceFacade
+import com.robsil.service.facade.PostServiceFacade
 import com.robsil.util.dtoFactories.toSimpleDto
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -27,6 +25,7 @@ import java.security.Principal
 class BoardController(
     private val boardService: BoardService,
     private val boardServiceFacade: BoardServiceFacade,
+    private val postServiceFacade: PostServiceFacade,
     private val postService: PostService,
     private val userService: UserService,
 ) {
@@ -36,10 +35,10 @@ class BoardController(
 
     // improve, user depends request
     @GetMapping("/{boardId}/posts")
-    fun getPostsByBoard(@PathVariable boardId: Long, principal: Principal?): List<Post> {
-        val posts: List<Post> = postService.getPostsByBoard(boardId)
+    fun getPostsByBoard(@PathVariable boardId: Long, principal: Principal?): List<SimplePostDto> {
+        val posts: List<Post> = postServiceFacade.getAllByBoardId(boardId, userService.getByPrincipal(principal))
 
-        return posts
+        return posts.map { it.toSimpleDto() }
     }
 
     @PostMapping
