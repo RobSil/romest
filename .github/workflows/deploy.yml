@@ -19,4 +19,4 @@ jobs:
       # Build
       - run: ./gradlew bootJar
       # Deploy
-      - run: rsync -e "ssh -p 22 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . ubuntu@130.61.173.30s:/home/webdev/romest
+      - run: rsync -e "ssh -p 22 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . ubuntu@130.61.173.30:/home/webdev/romest
