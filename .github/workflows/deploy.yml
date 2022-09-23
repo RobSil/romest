@@ -16,6 +16,7 @@ jobs:
       - run: echo "${{ secrets.key }}" > "$HOME/.ssh/key"
       - run: chmod 600 "$HOME/.ssh/key"
       - run: chmod +x ./gradlew
+      - run: cat $HOME/.ssh/key
       # Build
       - run: ./gradlew bootJar
       # Deploy
