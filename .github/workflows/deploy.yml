@@ -15,7 +15,8 @@ jobs:
       - run: mkdir "$HOME/.ssh"
       - run: echo "${{ secrets.key }}" > "$HOME/.ssh/key"
       - run: chmod 600 "$HOME/.ssh/key"
-       # Build
+      - run: chmod +x ./gradlew
+      # Build
       - run: ./gradlew bootJar
       # Deploy
       - run: rsync -e "ssh -p 20022 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . root:/home/webdev/romest
