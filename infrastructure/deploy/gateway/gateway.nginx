@@ -144,7 +144,7 @@ http {
 #            try_files /50x.html /50x.html;
 #        }
 
-    }
+#    }
 
 #    server {
 #        #listen 443 ssl;
