@@ -1,0 +1,238 @@
+
+server {
+    listen 80;
+    server_name romest.xyz;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 80;
+    server_name *.romest.xyz;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name romest.xyz;
+
+    ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
+
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        proxy_set_header   Host $host;
+        proxy_http_version 1.1;
+
+        # kill cache
+        proxy_hide_header Last-Modified;
+        proxy_hide_header Cache-Control;
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+        if_modified_since off;
+        expires off;
+        etag off;
+
+        proxy_set_header X-User-Agent $http_user_agent;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_pass $PROD_CLIENT_STATIC_URL;
+
+        error_page 500 502 503 504 @error500;
+    }
+
+    location /api {
+        proxy_set_header   Host $host;
+        proxy_http_version 1.1;
+
+        # kill cache
+        proxy_hide_header Last-Modified;
+        proxy_hide_header Cache-Control;
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+        if_modified_since off;
+        expires off;
+        etag off;
+
+        proxy_set_header X-User-Agent $http_user_agent;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_pass $PROD_API_SERVICE_URL;
+    }
+
+    location /get-started {
+        proxy_set_header   Host $host;
+        proxy_http_version 1.1;
+
+        # kill cache
+        proxy_hide_header Last-Modified;
+        proxy_hide_header Cache-Control;
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+        if_modified_since off;
+        expires off;
+        etag off;
+
+        proxy_set_header X-User-Agent $http_user_agent;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_pass $PROD_API_SERVICE_URL;
+    }
+
+    location @error500 {
+        root /var/www/static;
+        try_files /50x.html /50x.html;
+    }
+
+}
+
+server {
+    listen 443 ssl;
+    server_name stage.romest.xyz;
+
+    ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
+
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        proxy_set_header   Host $host;
+        proxy_http_version 1.1;
+
+        # kill cache
+        proxy_hide_header Last-Modified;
+        proxy_hide_header Cache-Control;
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+        if_modified_since off;
+        expires off;
+        etag off;
+
+        proxy_set_header X-User-Agent $http_user_agent;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_pass $STAGE_CLIENT_STATIC_URL;
+
+        error_page 500 502 503 504 @error500;
+    }
+
+    location /api {
+        proxy_set_header   Host $host;
+        proxy_http_version 1.1;
+
+        # kill cache
+        proxy_hide_header Last-Modified;
+        proxy_hide_header Cache-Control;
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+        if_modified_since off;
+        expires off;
+        etag off;
+
+        proxy_set_header X-User-Agent $http_user_agent;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_pass $STAGE_API_SERVICE_URL;
+    }
+
+    location @error500 {
+        root /var/www/static;
+        try_files /50x.html /50x.html;
+    }
+
+}
+
+server {
+    listen 443 ssl;
+    server_name grafana.romest.xyz;
+
+    ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
+
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_http_version 1.1;
+
+        # kill cache
+        proxy_hide_header Last-Modified;
+        proxy_hide_header Cache-Control;
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+        if_modified_since off;
+        expires off;
+        etag off;
+
+        proxy_pass http://localhost:3000;
+
+        error_page 500 502 503 504 @error500;
+    }
+
+    location @error500 {
+        root /var/www/static;
+        try_files /50x.html /50x.html;
+    }
+
+}
+
+server {
+    listen 443 ssl;
+    server_name portainer.romest.xyz;
+
+    ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
+
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_http_version 1.1;
+
+        # kill cache
+        proxy_hide_header Last-Modified;
+        proxy_hide_header Cache-Control;
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+        if_modified_since off;
+        expires off;
+        etag off;
+
+        proxy_pass http://localhost:9000;
+
+        error_page 500 502 503 504 @error500;
+    }
+
+    location @error500 {
+        root /var/www/static;
+        try_files /50x.html /50x.html;
+    }
+
+}
