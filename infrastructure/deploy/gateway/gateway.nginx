@@ -26,14 +26,15 @@ server {
 }
 
 server {
-    listen 443 ssl;
+    #listen 443 ssl;
+    listen 80;
     server_name romest.xyz;
 
-    ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
+    #ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
+    #ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
 
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+    #include /etc/letsencrypt/options-ssl-nginx.conf;
+    #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     location / {
         proxy_set_header   Host $host;
@@ -105,14 +106,15 @@ server {
 }
 
 server {
-    listen 443 ssl;
+    #listen 443 ssl;
+    listen 80;
     server_name stage.romest.xyz;
 
-    ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
+    #ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
+    #ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
 
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+    #include /etc/letsencrypt/options-ssl-nginx.conf;
+    #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     location / {
         proxy_set_header   Host $host;
@@ -164,14 +166,15 @@ server {
 }
 
 server {
-    listen 443 ssl;
+    #listen 443 ssl;
+    listen 80;
     server_name grafana.romest.xyz;
 
-    ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
+    #ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
+    #ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
 
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+    #include /etc/letsencrypt/options-ssl-nginx.conf;
+    #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     location / {
         proxy_set_header Host $host;
@@ -201,14 +204,15 @@ server {
 }
 
 server {
-    listen 443 ssl;
+    #listen 443 ssl;
+    listen 80;
     server_name portainer.romest.xyz;
 
-    ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
+    #ssl_certificate /etc/letsencrypt/live/romest.xyz/fullchain.pem;
+    #ssl_certificate_key /etc/letsencrypt/live/romest.xyz/privkey.pem;
 
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+    #include /etc/letsencrypt/options-ssl-nginx.conf;
+    #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     location / {
         proxy_set_header Host $host;
