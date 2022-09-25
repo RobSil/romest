@@ -19,6 +19,6 @@ jobs:
       - run: chmod 600 "$HOME/.ssh/key"
       - run: chmod +x ./gradlew
       # Build
-      - run: ./gradlew bootJar
+      - run: ./gradlew hello-service:bootJar
       # Deploy
       - run: rsync -e "ssh -p 22 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . root@129.159.202.192:/home/deploy/romest
