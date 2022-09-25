@@ -1,3 +1,4 @@
-rootProject.name = "MainApplication"
+rootProject.name = "romest"
 
-include("mainService")
+include("main-service")
+include("hello-service")

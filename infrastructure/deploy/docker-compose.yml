@@ -28,7 +28,21 @@ services:
 #      spring_data_mongodb_host: mongodb
     command: /bin/sh -c "cd /gjava && chmod +x /gjava/*.jar && java -jar /gjava/java.jar"
     ports:
-      - "127.0.0.1:2201:4001"
+      - "127.0.0.1:2201:8081"
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}"
+        max-size: 256m
+
+  hello-service:
+    image: amazoncorretto:17.0.4-alpine
+    volumes:
+      - ./java/api-service-0.0.1-SNAPSHOT.jar:/gjava/java.jar
+      - ../files:/gjava/files
+    command: /bin/sh -c "cd /gjava && chmod +x /gjava/*.jar && java -jar /gjava/java.jar"
+    ports:
+      - "127.0.0.1:2201:8082"
     logging:
       driver: "json-file"
       options:
