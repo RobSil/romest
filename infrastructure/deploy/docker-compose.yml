@@ -3,6 +3,7 @@ version: '3.3'
 services:
 
   mongodb:
+    platform: linux/x86_64
     image: mongo:5.0.12
     ports:
       - "2301:27017"
@@ -36,6 +37,7 @@ services:
 #        max-size: 256m
 
   hello-service:
+    platform: linux/x86_64
     image: amazoncorretto:17.0.4-alpine
     volumes:
       - ./jar/hello-service-0.0.1-SNAPSHOT.jar:/gjava/java.jar
