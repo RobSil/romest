@@ -3,7 +3,7 @@ version: '3.3'
 services:
 
   gateway:
-    image: nginx:1.19.6
+    image: nginx:1.23.1
     network_mode: host
     env_file:
       - port_host.env
@@ -14,7 +14,7 @@ services:
       - ./start-nginx.sh:/etc/nginx/start-nginx.sh
       - ../certbot/conf:/etc/letsencrypt
       - ../certbot/www:/var/www/certbot
-    command: /bin/bash -c  "chmod +x /etc/nginx/*.sh && /etc/nginx/start-nginx.sh"
+#    command: /bin/bash -c  "chmod +x /etc/nginx/*.sh && /etc/nginx/start-nginx.sh"
     logging:
       driver: "json-file"
       options:

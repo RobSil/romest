@@ -1,0 +1,32 @@
+name: deploy-gateway
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      MODE: "gateway"
+      SOURCE: "infrastructure/deploy/gateway/"
+      TARGET: "/root/romest/nginx-gateway/"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Down docker
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: docker-compose -f /root/romest/nginx-gateway/docker-compose.yml down || true
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          passphrase: ''
+          privateKey: ${{ secrets.action_key }}
+      - name: Copy on machine
+        uses: easingthemes/ssh-deploy@v2.1.5
+      - name: Start docker
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: docker-compose -f /root/romest/nginx-gateway/docker-compose.yml up -d
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          passphrase: ''
+          privateKey: ${{ secrets.action_key }}

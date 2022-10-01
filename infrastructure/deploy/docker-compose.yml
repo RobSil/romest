@@ -15,30 +15,30 @@ services:
         tag: "{{.ImageName}}|{{.Name}}"
         max-size: 256m
 
-  main-service:
-    image: amazoncorretto:17.0.4-alpine
-    env_file:
-      - ../../config/stage_mongo_auth.env
-    volumes:
-      - ./java/api-service-0.0.1-SNAPSHOT.jar:/gjava/java.jar
-      - ../files:/gjava/files
-    environment:
-      appMode: stage
-#      baseHost: https://stage.mobile.proxy-seller.com
-#      spring_data_mongodb_host: mongodb
-    command: /bin/sh -c "cd /gjava && chmod +x /gjava/*.jar && java -jar /gjava/java.jar"
-    ports:
-      - "127.0.0.1:2201:8081"
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}"
-        max-size: 256m
+#  main-service:
+#    image: amazoncorretto:17.0.4-alpine
+#    env_file:
+#      - ../../config/stage_mongo_auth.env
+#    volumes:
+#      - ./java/api-service-0.0.1-SNAPSHOT.jar:/gjava/java.jar
+#      - ../files:/gjava/files
+#    environment:
+#      appMode: stage
+##      baseHost: https://stage.mobile.proxy-seller.com
+##      spring_data_mongodb_host: mongodb
+#    command: /bin/sh -c "cd /gjava && chmod +x /gjava/*.jar && java -jar /gjava/java.jar"
+#    ports:
+#      - "127.0.0.1:2201:8081"
+#    logging:
+#      driver: "json-file"
+#      options:
+#        tag: "{{.ImageName}}|{{.Name}}"
+#        max-size: 256m
 
   hello-service:
     image: amazoncorretto:17.0.4-alpine
     volumes:
-      - ./java/api-service-0.0.1-SNAPSHOT.jar:/gjava/java.jar
+      - ./jar/hello-service-0.0.1-SNAPSHOT.jar:/gjava/java.jar
       - ../files:/gjava/files
     command: /bin/sh -c "cd /gjava && chmod +x /gjava/*.jar && java -jar /gjava/java.jar"
     ports:
@@ -49,16 +49,16 @@ services:
         tag: "{{.ImageName}}|{{.Name}}"
         max-size: 256m
 
-  frontservice:
-    image: nginx:1.23.1
-    volumes:
-      - ./front:/usr/share/nginx/html
-      - ../files:/usr/share/nginx/html/files
-      - ./gateway/nginx.front.conf:/etc/nginx/nginx.conf
-    ports:
-      - "127.0.0.1:2101:80"
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}"
-        max-size: 256m
+#  frontservice:
+#    image: nginx:1.23.1
+#    volumes:
+#      - ./front:/usr/share/nginx/html
+#      - ../files:/usr/share/nginx/html/files
+#      - ./gateway/nginx.front.conf:/etc/nginx/nginx.conf
+#    ports:
+#      - "127.0.0.1:2101:80"
+#    logging:
+#      driver: "json-file"
+#      options:
+#        tag: "{{.ImageName}}|{{.Name}}"
+#        max-size: 256m
