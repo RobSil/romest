@@ -2,43 +2,58 @@ version: '3.3'
 
 services:
 
-  mongodb:
-    platform: linux/x86_64
-    image: mongo:5.0.12
+  postgresql:
+    image: postgres:12.12
+    restart: always
     ports:
-      - "2301:27017"
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
     volumes:
-      - ../mongodb/data:/data/db
-      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
+      - "../postgres/data:/var/lib/postgresql/data"
+      - "./init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql"
     logging:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}"
         max-size: 256m
 
-#  main-service:
-#    image: amazoncorretto:17.0.4-alpine
-#    env_file:
-#      - ../../config/stage_mongo_auth.env
-#    volumes:
-#      - ./java/api-service-0.0.1-SNAPSHOT.jar:/gjava/java.jar
-#      - ../files:/gjava/files
+  redis:
+    image: 7.0.5-alpine3.16
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ../redis/data:/data
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}"
+        max-size: 256m
+
+  main-service:
+    image: amazoncorretto:17.0.3
+    env_file:
+      - ../../config/stage_mongo_auth.env
+    volumes:
+      - ./jar/main-service-0.0.1-SNAPSHOT.jar:/gjava/java.jar
+      - ../files:/gjava/files
 #    environment:
 #      appMode: stage
-##      baseHost: https://stage.mobile.proxy-seller.com
-##      spring_data_mongodb_host: mongodb
-#    command: /bin/sh -c "cd /gjava && chmod +x /gjava/*.jar && java -jar /gjava/java.jar"
-#    ports:
-#      - "127.0.0.1:2201:8081"
-#    logging:
-#      driver: "json-file"
-#      options:
-#        tag: "{{.ImageName}}|{{.Name}}"
-#        max-size: 256m
+#      baseHost: https://stage.mobile.proxy-seller.com
+#      spring_data_mongodb_host: mongodb
+    command: /bin/sh -c "cd /gjava && chmod +x /gjava/*.jar && java -jar /gjava/java.jar"
+    ports:
+      - "127.0.0.1:2201:8081"
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}"
+        max-size: 256m
 
   hello-service:
-    platform: linux/x86_64
-    image: amazoncorretto:17.0.4-alpine
+    image: amazoncorretto:17.0.3
     volumes:
       - ./jar/hello-service-0.0.1-SNAPSHOT.jar:/gjava/java.jar
       - ../files:/gjava/files
@@ -50,7 +65,19 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}"
         max-size: 256m
-
+#  mongodb:
+#    platform: linux/x86_64
+#    image: mongo:5.0.12
+#    ports:
+#      - "27017:27017"
+#    volumes:
+#      - ../mongodb/data:/data/db
+##      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
+#    logging:
+#      driver: "json-file"
+#      options:
+#        tag: "{{.ImageName}}|{{.Name}}"
+#        max-size: 256m
 #  frontservice:
 #    image: nginx:1.23.1
 #    volumes:

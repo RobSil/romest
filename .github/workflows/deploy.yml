@@ -25,8 +25,12 @@ jobs:
       # Build
       - name: Build hello-service
         run: ./gradlew hello-service:bootJar
+      - name: Build main-service
+        run: ./gradlew main-service:bootJar
       - name: Copy hello-service jar to deploy
         run: mv ./hello-service/build/libs/*.jar ./infrastructure/deploy/jar
+      - name: Copy main-service jar to deploy
+        run: mv ./main-service/build/libs/*.jar ./infrastructure/deploy/jar
       # Deploy
       - name: Copy files to machine
         run: rsync -e "ssh -p 22 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . root@129.159.202.192:/root/deploy/romest
