@@ -45,4 +45,8 @@ server {
 
         error_page 500 502 503 504 @error500;
     }
+
+    location /static {
+        root /var/www;
+    }
 }
