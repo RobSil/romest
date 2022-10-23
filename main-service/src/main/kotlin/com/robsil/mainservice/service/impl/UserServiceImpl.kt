@@ -6,9 +6,14 @@ import com.robsil.mainservice.model.UserRegisterDto
 import com.robsil.mainservice.model.enum.ERole
 import com.robsil.mainservice.model.exception.ForbiddenException
 import com.robsil.mainservice.model.exception.NotFoundException
+import com.robsil.mainservice.model.exception.constant.PostExceptionMessages.PRINCIPAL_NULL
 import com.robsil.mainservice.service.RoleService
 import com.robsil.mainservice.service.UserService
 import org.apache.logging.log4j.kotlin.logger
+import org.springframework.boot.actuate.endpoint.SecurityContext
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -45,8 +50,27 @@ class UserServiceImpl(
     }
 
     override fun getByPrincipal(principal: Principal?): User {
-        if (principal == null) throw ForbiddenException("INVALID_SESSION")
+        if (principal == null) throw ForbiddenException(PRINCIPAL_NULL)
         return getByEmail(principal.name)
+    }
+
+    override fun getCurrentUser(): User {
+        val authentication = SecurityContextHolder.getContext().authentication
+        val email = authentication.name ?: getNameFromPrincipals(authentication)
+
+        return getByEmail(email)
+    }
+
+    private fun getNameFromPrincipals(authentication: Authentication): String {
+        val principal = authentication.principal
+        if (principal is UserDetails) {
+            return principal.username
+        }
+        if (principal is Principal) {
+            return principal.name
+        }
+
+        throw ForbiddenException("User isn't authenticated.")
     }
 
     fun saveEntity(user: User): User {

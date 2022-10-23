@@ -7,19 +7,27 @@ import javax.persistence.*
 class Post(
 
     @Column
-    val title: String?,
+    var title: String?,
 
     @Column
-    val text: String?,
+    var text: String?,
 
 //    @JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator::class)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "board_id", referencedColumnName = "id")
     val board: Board,
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "photo_id", referencedColumnName = "id")
+    val photo: Photo,
+
 //    @OneToMany(mappedBy = "post")
 //    val photos: List<Photo>
 ) : BaseEntity() {
+
+    constructor(id: Long, title: String?, text: String?, board: Board, photo: Photo) : this(title, text, board, photo) {
+        this.id = id
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

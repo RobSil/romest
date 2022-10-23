@@ -1,10 +1,14 @@
 package com.robsil.mainservice.model.exception
 
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.ResponseStatus
 
-class IllegalRequestPayloadException : HttpException {
+class ValidationErrorResponse: HttpException {
 
+    var violations: MutableList<Violation> = ArrayList()
+
+    constructor() : super(HttpStatus.BAD_REQUEST.value())
     constructor(message: String?) : super(message, HttpStatus.BAD_REQUEST.value())
     constructor(message: String?, cause: Throwable?) : super(message, cause, HttpStatus.BAD_REQUEST.value())
+    constructor(cause: Throwable?) : super(cause, HttpStatus.BAD_REQUEST.value())
+
 }

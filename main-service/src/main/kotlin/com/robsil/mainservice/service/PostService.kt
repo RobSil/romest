@@ -2,10 +2,14 @@ package com.robsil.mainservice.service
 
 import com.robsil.mainservice.data.domain.Post
 import com.robsil.mainservice.model.dto.PostCreateDto
+import com.robsil.mainservice.model.dto.PostSaveDto
 
 interface PostService {
 
+    @Deprecated(message = "getAll - is intended only for testing purposes.", level = DeprecationLevel.WARNING)
     fun getAll(): List<Post>
+
+    fun getById(id: Long): Post
 
     fun getPostsByBoard(boardId: Long): List<Post>
 
@@ -14,6 +18,8 @@ interface PostService {
     fun saveEntity(post: Post): Post
 
     fun create(dto: PostCreateDto): Post
+
+    fun save(dto: PostSaveDto): Post
 
     fun deleteById(postId: Long): Unit
 

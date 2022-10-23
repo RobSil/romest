@@ -48,4 +48,8 @@ class FileSystemFileService(
 
         return ImageSaveResult(fileName, fullPath, StoringSource.FILE_SYSTEM)
     }
+
+    override fun delete(path: String) {
+        TODO("Not yet implemented")
+    }
 }

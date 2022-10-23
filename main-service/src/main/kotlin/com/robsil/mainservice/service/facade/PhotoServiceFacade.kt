@@ -6,5 +6,7 @@ import org.springframework.web.multipart.MultipartFile
 
 interface PhotoServiceFacade {
 
-    fun save(post: Post, minimizedBoardName: String, multipartFile: MultipartFile): Photo
+    fun save(minimizedBoardName: String, multipartFile: MultipartFile): Photo
+
+    fun deleteById(id: Long)
 }

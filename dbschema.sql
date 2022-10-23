@@ -73,21 +73,6 @@ create table if not exists public.boards
     constraint fk_user foreign key (user_id) references public.users (id)
 );
 
-create table if not exists public.posts
-(
-    id                 bigint                  not null generated always as identity,
-    created_date       timestamp without time zone default current_timestamp,
-    last_modified_date timestamp without time zone,
-
-    title              character varying(256)  null,
-    text               character varying(8192) not null,
-
-    board_id           bigint                  not null,
-
-    constraint posts_pkey primary key (id),
-    constraint fk_board foreign key (board_id) references public.boards (id)
-);
-
 -- create table if not exists public.posts_boards
 -- (
 --     id                 bigint not null generated always as identity,
@@ -110,10 +95,27 @@ create table if not exists public.photos
 
     path               character varying(1024) not null,
     storing_source     character varying(128)  not null,
-    post_id            bigint                  not null,
+--     post_id            bigint                  not null,
 
-    constraint photos_pkey primary key (id),
-    constraint fk_posts foreign key (post_id) references public.posts (id)
+    constraint photos_pkey primary key (id)
+--     constraint fk_posts foreign key (post_id) references public.posts (id)
+);
+
+create table if not exists public.posts
+(
+    id                 bigint                  not null generated always as identity,
+    created_date       timestamp without time zone default current_timestamp,
+    last_modified_date timestamp without time zone,
+
+    title              character varying(256)  null,
+    text               character varying(8192) not null,
+
+    board_id           bigint                  not null,
+    photo_id           bigint                  not null,
+
+    constraint posts_pkey primary key (id),
+    constraint fk_board foreign key (board_id) references public.boards (id),
+    constraint fk_photo foreign key (photo_id) references public.photos (id)
 );
 
 create table if not exists public.avatars

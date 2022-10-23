@@ -42,6 +42,13 @@ class ImageKitFileService(
         val result = imageKit.upload(request)
             ?: throw RuntimeException("Something went wrong during uploading photo, result is null")
 
-        return ImageSaveResult(result.fileId, result.filePath, StoringSource.IMAGEKIT)
+//        return ImageSaveResult(result.fileId, result.filePath, StoringSource.IMAGEKIT)
+        return ImageSaveResult(result.fileId, result.fileId, StoringSource.IMAGEKIT)
+    }
+
+    override fun delete(path: String) {
+
+        imageKit.deleteFile(path)
+        TODO("Not yet implemented")
     }
 }

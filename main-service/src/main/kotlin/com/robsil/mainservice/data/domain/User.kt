@@ -25,6 +25,10 @@ class User(
 
     ) : BaseEntity() {
 
+    constructor(id: Long, email: String, passwordHash: String, isBlocked: Boolean) : this(email, passwordHash, isBlocked) {
+        this.id = id
+    }
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "users_roles",

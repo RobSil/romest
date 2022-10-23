@@ -12,4 +12,6 @@ interface FileService {
     fun saveAvatar(folderPath: String, fileName: String, fileType: FileType, multipartFile: MultipartFile): File
 
     fun savePhoto(folderPath: String, fileName: String, multipartFile: MultipartFile): ImageSaveResult
+
+    fun delete(path: String): Unit
 }

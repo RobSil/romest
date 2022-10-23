@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull
 @Table(name = "photos")
 class Photo(
 
+    // is it going to be intended as identifier for imageKit, and path for fileSystem?
+    // definitely has to be added some unique relative id
     @Column
     @NotNull
     val path: String,
@@ -17,11 +19,16 @@ class Photo(
     @NotNull
     val storingSource: StoringSource,
 
-    @ManyToOne
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
-    val post: Post
+//    @ManyToOne
+//    @JoinColumn(name = "post_id", referencedColumnName = "id")
+//    val post: Post
 
 ): BaseEntity() {
+
+    constructor(id: Long, path: String, storingSource: StoringSource) : this(path, storingSource) {
+        this.id = id
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

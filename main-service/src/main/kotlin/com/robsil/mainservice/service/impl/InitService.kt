@@ -70,15 +70,16 @@ class InitService(
     }
 
     fun generatePosts(count: Int, boardId: Long) {
-        val faker = Faker()
-
-        val board = boardService.getById(boardId)
-
-        for (i in 1..count) {
+        TODO("Implement post generating")
+//        val faker = Faker()
+//
+//        val board = boardService.getById(boardId)
+//
+//        for (i in 1..count) {
+////            val post = Post(faker.book().title(), faker.breakingBad().episode(), board)
 //            val post = Post(faker.book().title(), faker.breakingBad().episode(), board)
-            val post = Post(faker.book().title(), faker.breakingBad().episode(), board)
-
-            postService.saveEntity(post)
-        }
+//
+//            postService.saveEntity(post)
+//        }
     }
 }

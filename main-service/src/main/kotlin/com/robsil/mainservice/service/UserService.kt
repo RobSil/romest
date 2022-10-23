@@ -12,6 +12,7 @@ interface UserService {
     fun getByEmail(email: String): User
 
     fun getByPrincipal(principal: Principal?): User
+    fun getCurrentUser(): User
 
     fun register(dto: UserRegisterDto): User
 

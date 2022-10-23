@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
+import javax.validation.constraints.NotNull
 
 @RestController
 @RequestMapping("/api/v1/boards")
@@ -33,7 +34,7 @@ class BoardController(
 
     // improve, user depends request
     @GetMapping("/{boardId}/posts")
-    fun getPostsByBoard(@PathVariable boardId: Long, principal: Principal?): List<SimplePostDto> {
+    fun getPostsByBoard(@PathVariable @NotNull boardId: Long, principal: Principal?): List<SimplePostDto> {
         val posts: List<Post> = postServiceFacade.getAllByBoardId(boardId, userService.getByPrincipal(principal))
 
         return posts.map { it.toSimpleDto() }

@@ -19,13 +19,23 @@ class PhotoServiceFacadeImpl(
 
     val stringLength = 10
 
-    override fun save(post: Post, minimizedBoardName: String, multipartFile: MultipartFile): Photo {
+    override fun save(minimizedBoardName: String, multipartFile: MultipartFile): Photo {
         val imageSaveResult = fileService.savePhoto(minimizedBoardName, getRandomString(stringLength), multipartFile)
 
-        var photo = Photo(imageSaveResult.path, imageSaveResult.storingSource, post)
+        var photo = Photo(imageSaveResult.path, imageSaveResult.storingSource)
         photo = photoService.saveEntity(photo)
 
         return photo
     }
 
+    override fun deleteById(id: Long) {
+        val photo = try {
+            photoService.getById(id)
+        } catch (_: Exception) {
+            return
+        }
+
+        fileService.delete(photo.path)
+        photoService.deleteById(photo.id!!)
+    }
 }
