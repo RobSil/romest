@@ -8,6 +8,8 @@ import com.robsil.mainservice.service.SessionService
 import com.robsil.mainservice.service.UserService
 import com.robsil.mainservice.util.dtoFactories.toInformationDto
 import org.apache.logging.log4j.kotlin.logger
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -30,7 +32,11 @@ class UserController(
     fun getAll(): List<User> = userService.getAll()
 
     @PostMapping("/register")
-    fun register(@RequestBody dto: UserRegisterDto) = userService.register(dto)
+    fun register(@RequestBody dto: UserRegisterDto) : ResponseEntity<Unit> {
+        userService.register(dto)
+
+        return ResponseEntity<Unit>(HttpStatus.OK)
+    }
 
     @DeleteMapping("/{userId}/invalidate")
     fun invalidateUserSession(@PathVariable userId: Long) =
@@ -41,9 +47,11 @@ class UserController(
     }
 
     @GetMapping("/information")
-    fun getUserInfo(principal: Principal?): UserInformationDto {
-        return principal?.let { userService.getByPrincipal(principal).toInformationDto() }
+    fun getUserInfo(principal: Principal?): ResponseEntity<UserInformationDto> {
+        val dto = principal?.let { userService.getByPrincipal(principal).toInformationDto() }
             ?: run { throw ForbiddenException("FORBIDDEN") }
+
+        return ResponseEntity(dto, HttpStatus.OK)
     }
 //    fun getUserInfo(httpSession: HttpSession?): UserInformationDto {
 //    fun getUserInfo(principal: Principal?, httpSession: HttpSession?): Session? {

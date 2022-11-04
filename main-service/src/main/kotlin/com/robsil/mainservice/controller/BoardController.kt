@@ -8,6 +8,8 @@ import com.robsil.mainservice.service.UserService
 import com.robsil.mainservice.service.facade.BoardServiceFacade
 import com.robsil.mainservice.service.facade.PostServiceFacade
 import com.robsil.mainservice.util.dtoFactories.toSimpleDto
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -34,20 +36,21 @@ class BoardController(
 
     // improve, user depends request
     @GetMapping("/{boardId}/posts")
-    fun getPostsByBoard(@PathVariable @NotNull boardId: Long, principal: Principal?): List<SimplePostDto> {
+    fun getPostsByBoard(@PathVariable @NotNull boardId: Long, principal: Principal?): ResponseEntity<List<SimplePostDto>> {
         val posts: List<Post> = postServiceFacade.getAllByBoardId(boardId, userService.getByPrincipal(principal))
 
-        return posts.map { it.toSimpleDto() }
+        return ResponseEntity(posts.map { it.toSimpleDto() }, HttpStatus.OK)
     }
 
     @PostMapping
-    fun create(@RequestBody dto: BoardCreateDto, principal: Principal?): SimpleBoardDto = boardService.create(dto, userService.getByPrincipal(principal)).toSimpleDto()
+    fun create(@RequestBody dto: BoardCreateDto, principal: Principal?): ResponseEntity<SimpleBoardDto> = ResponseEntity(boardService.create(dto, userService.getByPrincipal(principal)).toSimpleDto(), HttpStatus.OK)
 
     @PutMapping
-    fun save(@RequestBody dto: BoardSaveDto, principal: Principal?): SimpleBoardDto = boardService.save(dto, userService.getByPrincipal(principal)).toSimpleDto()
+    fun save(@RequestBody dto: BoardSaveDto, principal: Principal?): ResponseEntity<SimpleBoardDto> = ResponseEntity(boardService.save(dto, userService.getByPrincipal(principal)).toSimpleDto(), HttpStatus.OK)
 
     @DeleteMapping("/{boardId}")
-    fun deleteById(@PathVariable boardId: Long, principal: Principal?): Unit {
+    fun deleteById(@PathVariable boardId: Long, principal: Principal?) {
         boardServiceFacade.deleteById(boardId, principal)
+        ResponseEntity<Unit>(HttpStatus.NO_CONTENT)
     }
 }

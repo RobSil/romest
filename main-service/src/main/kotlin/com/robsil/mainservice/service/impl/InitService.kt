@@ -1,12 +1,10 @@
 package com.robsil.mainservice.service.impl
 
-import com.robsil.mainservice.data.domain.Post
 import com.robsil.mainservice.data.domain.User
 import com.robsil.mainservice.data.repository.RoleRepository
 import com.robsil.mainservice.data.repository.UserRepository
 import com.robsil.mainservice.model.enum.ERole
 import com.robsil.mainservice.service.*
-import net.datafaker.Faker
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -51,7 +49,7 @@ class InitService(
         val rawPassword = "1414"
 
         val saUser = User(email, passwordEncoder.encode(rawPassword), false)
-        saUser.addRole(roleService.getByName("SUPERADMIN"))
+        saUser.addRole(roleService.getByName(ERole.SUPERADMIN))
 
         userRepository.save(saUser)
 

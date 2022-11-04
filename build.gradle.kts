@@ -88,6 +88,9 @@ project("main-service") {
 //	platform("com.squareup.okio:okio:3.2.0")
 		implementation("com.github.imagekit-developer:$imageKitVersion")
 
+		implementation("org.springdoc:springdoc-openapi-ui:1.6.12")
+		runtimeOnly("org.springdoc:springdoc-openapi-kotlin:1.6.12")
+
 
 		runtimeOnly("org.postgresql:postgresql")
 
