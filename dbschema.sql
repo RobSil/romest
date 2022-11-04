@@ -95,6 +95,8 @@ create table if not exists public.photos
 
     path               character varying(1024) not null,
     storing_source     character varying(128)  not null,
+    image_kit_id character varying(128) not null,
+    image_kit_url character varying(512) not null,
 --     post_id            bigint                  not null,
 
     constraint photos_pkey primary key (id)

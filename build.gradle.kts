@@ -76,7 +76,7 @@ project("main-service") {
 		implementation("org.springframework.boot:spring-boot-starter-validation")
 		implementation("org.springframework.session:spring-session-data-redis")
 
-		implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonDatatypeJsr310Version")
+//		implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonDatatypeJsr310Version")
 
 		implementation("io.lettuce:lettuce-core")
 

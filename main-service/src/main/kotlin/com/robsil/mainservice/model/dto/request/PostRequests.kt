@@ -2,10 +2,11 @@ package com.robsil.mainservice.model.dto.request
 
 import org.hibernate.validator.constraints.Length
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 
 
 data class PostCreateRequest(
-    @field:NotBlank
+    @field:NotNull
     val boardId: Long,
 
     @Length(min = 1, max = 128)

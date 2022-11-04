@@ -22,7 +22,7 @@ class PhotoServiceFacadeImpl(
     override fun save(minimizedBoardName: String, multipartFile: MultipartFile): Photo {
         val imageSaveResult = fileService.savePhoto(minimizedBoardName, getRandomString(stringLength), multipartFile)
 
-        var photo = Photo(imageSaveResult.path, imageSaveResult.storingSource)
+        var photo = Photo(imageSaveResult.path, imageSaveResult.storingSource, imageSaveResult.imageKitId, imageSaveResult.imageKitUrl)
         photo = photoService.saveEntity(photo)
 
         return photo
@@ -35,7 +35,7 @@ class PhotoServiceFacadeImpl(
             return
         }
 
-        fileService.delete(photo.path)
+        fileService.delete(photo)
         photoService.deleteById(photo.id!!)
     }
 }

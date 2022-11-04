@@ -1,5 +1,6 @@
 package com.robsil.mainservice.service.impl
 
+import com.robsil.mainservice.data.domain.Photo
 import com.robsil.mainservice.model.enum.FileType
 import com.robsil.mainservice.model.enum.StoringSource
 import com.robsil.mainservice.model.image.ImageSaveResult
@@ -46,10 +47,14 @@ class FileSystemFileService(
 
         val file = save(Path.of(fullPath), multipartFile)
 
-        return ImageSaveResult(fileName, fullPath, StoringSource.FILE_SYSTEM)
+        return ImageSaveResult(fileName, fullPath, StoringSource.FILE_SYSTEM, "", "")
     }
 
-    override fun delete(path: String) {
+    override fun delete(photo: Photo) {
+        if (photo.storingSource != StoringSource.FILE_SYSTEM)
+            throw IllegalArgumentException("Storing source should be fileSystem to delete it here.")
+
+        Files.deleteIfExists(Path.of(photo.path))
         TODO("Not yet implemented")
     }
 }

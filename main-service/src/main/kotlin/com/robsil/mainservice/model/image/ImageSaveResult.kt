@@ -6,4 +6,6 @@ data class ImageSaveResult(
     val fileId: String,
     val path: String,
     val storingSource: StoringSource,
+    val imageKitId : String,
+    val imageKitUrl: String,
 )

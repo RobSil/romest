@@ -1,5 +1,6 @@
 package com.robsil.mainservice.service.impl
 
+import com.robsil.mainservice.data.domain.Photo
 import com.robsil.mainservice.model.enum.FileType
 import com.robsil.mainservice.model.enum.StoringSource
 import com.robsil.mainservice.model.image.ImageSaveResult
@@ -43,12 +44,13 @@ class ImageKitFileService(
             ?: throw RuntimeException("Something went wrong during uploading photo, result is null")
 
 //        return ImageSaveResult(result.fileId, result.filePath, StoringSource.IMAGEKIT)
-        return ImageSaveResult(result.fileId, result.fileId, StoringSource.IMAGEKIT)
+        return ImageSaveResult(result.fileId, result.filePath, StoringSource.IMAGEKIT, result.fileId, result.url)
     }
 
-    override fun delete(path: String) {
+    override fun delete(photo: Photo) {
+        if (photo.storingSource != StoringSource.IMAGEKIT)
+            throw IllegalArgumentException("Storing source should be imageKit to delete it here.")
 
-        imageKit.deleteFile(path)
-        TODO("Not yet implemented")
+        imageKit.deleteFile(photo.imageKitId)
     }
 }

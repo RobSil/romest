@@ -1,5 +1,6 @@
 package com.robsil.mainservice.service
 
+import com.robsil.mainservice.data.domain.Photo
 import com.robsil.mainservice.model.enum.FileType
 import com.robsil.mainservice.model.image.ImageSaveResult
 import org.springframework.web.multipart.MultipartFile
@@ -13,5 +14,5 @@ interface FileService {
 
     fun savePhoto(folderPath: String, fileName: String, multipartFile: MultipartFile): ImageSaveResult
 
-    fun delete(path: String): Unit
+    fun delete(photo: Photo): Unit
 }

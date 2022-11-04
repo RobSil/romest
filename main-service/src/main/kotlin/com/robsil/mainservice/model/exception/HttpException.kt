@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 @JsonIgnoreProperties("cause", "stackTrace", "suppressed", "localizedMessage", "trace")
 abstract class HttpException: RuntimeException {
 
-    val timestamp: LocalDateTime = LocalDateTime.now()
+    val timestamp: Long = System.currentTimeMillis()
 
     val status: Int
 

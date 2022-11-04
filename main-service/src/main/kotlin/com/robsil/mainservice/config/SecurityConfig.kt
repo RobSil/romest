@@ -6,6 +6,7 @@ import org.apache.logging.log4j.kotlin.logger
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -16,14 +17,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.factory.PasswordEncoderFactories
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 
 
 @Configuration
 class SecurityConfig(
     val userRepository: UserRepository
-): WebSecurityCustomizer {
+) : WebSecurityCustomizer {
     val logger = logger()
 
     override fun customize(web: WebSecurity?) {
@@ -31,11 +35,11 @@ class SecurityConfig(
             return
         }
 
-        web.ignoring()
-            .antMatchers(
-                "/api/v1/users/register",
-                "/api/login"
-            )
+//        web.ignoring()
+//            .antMatchers(
+//                "/api/v1/users/register",
+//                "/api/login"
+//            )
 
         web
             .debug(false)
@@ -43,29 +47,36 @@ class SecurityConfig(
     }
 
     @Bean
-    fun passwordEncoder(): BCryptPasswordEncoder {
-        return BCryptPasswordEncoder()
+    fun passwordEncoder(): PasswordEncoder {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder()
     }
 
     @Bean
-    fun filterChain(http: HttpSecurity,
+    fun filterChain(
+        http: HttpSecurity,
 //                    sessionRegistry: SessionRegistry
     ): SecurityFilterChain {
 
-        val authenticationManagerBuilder = http.getSharedObject(
-            AuthenticationManagerBuilder::class.java
-        )
-        authenticationManagerBuilder.userDetailsService<UserDetailsService>(object : UserDetailsService {
-            override fun loadUserByUsername(username: String?): UserDetails {
-                logger.info("loadUserByUsername: inside the method. Username: $username")
-                username ?: throw NotFoundException()
-                val user = userRepository.findByEmail(username) ?: throw NotFoundException()
+//        val authenticationManagerBuilder = http.getSharedObject(
+//            AuthenticationManagerBuilder::class.java
+//        )
+//        authenticationManagerBuilder.userDetailsService()
 
-                return User(user.email, user.passwordHash, user.roles.map { SimpleGrantedAuthority(it.title) })
-            }
-        })
+        val userDetailsService = UserDetailsService { username ->
+            logger.info("loadUserByUsername: inside the method. Username: $username")
+            username ?: throw NotFoundException()
+            val user = userRepository.findByEmail(username) ?: throw UsernameNotFoundException("User cannot be found.")
 
-//        http.authenticationProvider(DaoAuthenticationProvider())
+            User(user.email, user.passwordHash, user.roles.map { SimpleGrantedAuthority(it.title) })
+        }
+
+        http.userDetailsService(userDetailsService)
+
+        val provider = DaoAuthenticationProvider()
+
+        provider.setUserDetailsService(userDetailsService)
+
+        http.authenticationProvider(provider)
 
         http
             .csrf()
@@ -98,8 +109,9 @@ class SecurityConfig(
         http
             .authorizeRequests()
             .antMatchers(
-                "/**",
-                "/api/v1/boards/**"
+                "/api/v1/users/register",
+                "/api/login",
+                "/login"
 //                "/api/v1/users/register",
 //                "/api/login",
 //                "/api/v1/init/ping"
@@ -120,8 +132,8 @@ class SecurityConfig(
         return http.build()
     }
 
-    @Bean
-    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
-        return authenticationConfiguration.authenticationManager
-    }
+//    @Bean
+//    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
+//        return authenticationConfiguration.authenticationManager
+//    }
 }

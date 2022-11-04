@@ -5,4 +5,6 @@ object ExceptionMessages {
     const val GOT_IMPOSSIBLE_NULL = "GOT_IMPOSSIBLE_NULL"
 
     const val UNAUTHORIZED_BOARD_USER = "Can't modify this board."
+
+    const val PHOTO_NOT_FOUND = "Photo not found."
 }
