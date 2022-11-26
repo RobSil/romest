@@ -13,6 +13,8 @@ interface BoardService {
 
     fun getByName(name: String): Board
 
+    fun getByUsernameAndMinimizedName(username: String, minimizedName: String): Board
+
     fun create(dto: BoardCreateDto, user: User): Board
 
     fun save(dto: BoardSaveDto, user: User): Board

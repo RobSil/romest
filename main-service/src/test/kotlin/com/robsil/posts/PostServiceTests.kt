@@ -36,7 +36,7 @@ class PostServiceTests {
         @Test
         fun `test get by id found`() {
 
-            val user = User(1, "email@some.com", "123", false)
+            val user = User(1, "username", "email@some.com", "123", false)
 
             val board = Board(1, "board1", false, user)
 

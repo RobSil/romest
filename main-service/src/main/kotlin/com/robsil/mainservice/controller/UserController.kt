@@ -4,9 +4,9 @@ import com.robsil.mainservice.data.domain.User
 import com.robsil.mainservice.model.UserInformationDto
 import com.robsil.mainservice.model.UserRegisterDto
 import com.robsil.mainservice.model.exception.ForbiddenException
+import com.robsil.mainservice.model.exception.UnauthorizedException
 import com.robsil.mainservice.service.SessionService
 import com.robsil.mainservice.service.UserService
-import com.robsil.mainservice.util.dtoFactories.toInformationDto
 import org.apache.logging.log4j.kotlin.logger
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -31,11 +31,16 @@ class UserController(
     @GetMapping
     fun getAll(): List<User> = userService.getAll()
 
+    @GetMapping("/refresh")
+    fun refresh(principal: Principal?): ResponseEntity<UserInformationDto> {
+        return ResponseEntity(userService.getByPrincipal(principal).toInformationDto(), HttpStatus.OK)
+    }
+
     @PostMapping("/register")
     fun register(@RequestBody dto: UserRegisterDto) : ResponseEntity<Unit> {
         userService.register(dto)
 
-        return ResponseEntity<Unit>(HttpStatus.OK)
+        return ResponseEntity<Unit>(HttpStatus.CREATED)
     }
 
     @DeleteMapping("/{userId}/invalidate")
@@ -49,7 +54,7 @@ class UserController(
     @GetMapping("/information")
     fun getUserInfo(principal: Principal?): ResponseEntity<UserInformationDto> {
         val dto = principal?.let { userService.getByPrincipal(principal).toInformationDto() }
-            ?: run { throw ForbiddenException("FORBIDDEN") }
+            ?: run { throw UnauthorizedException("Unauthorized") }
 
         return ResponseEntity(dto, HttpStatus.OK)
     }

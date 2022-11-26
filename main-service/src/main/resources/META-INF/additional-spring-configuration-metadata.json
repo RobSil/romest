@@ -9,5 +9,10 @@
       "name": "data.image.photo.path",
       "type": "java.lang.String",
       "description": "File path for (post) photos."
+    },
+    {
+      "name": "spring.authentication.unauthorized-message",
+      "type": "java.lang.String",
+      "description": "Message that will be shown on unauthorized (not authenticated) situation."
     }
   ] }

@@ -1,8 +1,11 @@
 package com.robsil.mainservice.model.dto
 
+import com.robsil.mainservice.data.domain.Tag
 import com.robsil.mainservice.model.dto.request.PostSaveRequest
 import org.hibernate.validator.constraints.Length
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 data class PostCreateDto(
     @field:NotBlank
@@ -16,6 +19,10 @@ data class PostCreateDto(
 
     @Length(min = 1, max = 1024)
     val text: String?,
+
+    @field:NotNull
+    @field:Size(min = 1)
+    val tags: Set<Tag>,
 )
 
 data class PostSaveDto(

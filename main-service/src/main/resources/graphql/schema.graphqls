@@ -1,0 +1,41 @@
+type Query {
+    boards: [Board],
+    boardByUsernameAndMinimizedName(username: String, minimizedName: String): Board
+}
+
+type Board {
+    id: ID!
+    name: String
+    minimizedName: String
+    isPrivate: Boolean
+    user: User,
+    posts: [Post],
+}
+
+type User {
+    username: String
+    email: String
+}
+
+type Post {
+    title: String,
+    text: String,
+    board: Board,
+    photo: Photo,
+    tags: [Tag]
+}
+
+type Tag {
+    title: String
+}
+
+type Photo {
+    path: String,
+    storingSource: StoringSource,
+    imageKitId: String,
+    imageKitUrl: String,
+}
+
+enum StoringSource {
+    FILE_SYSTEM, IMAGEKIT
+}

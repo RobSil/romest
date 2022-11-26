@@ -1,6 +1,7 @@
 package com.robsil.mainservice.service
 
 import com.robsil.mainservice.data.domain.Post
+import com.robsil.mainservice.data.domain.User
 import com.robsil.mainservice.model.dto.PostCreateDto
 import com.robsil.mainservice.model.dto.PostSaveDto
 
@@ -14,6 +15,10 @@ interface PostService {
     fun getPostsByBoard(boardId: Long): List<Post>
 
     fun getPostsByBoardId(boardId: Long): List<Post>
+
+    fun getAllByTagsRelevant(tags: List<Long>): List<Post>
+
+    fun getAllByTagsRelevant(tags: List<Long>, userId: Long): List<Post>
 
     fun saveEntity(post: Post): Post
 

@@ -1,20 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {ChakraProvider} from "@chakra-ui/react";
-import {RouterProvider} from "react-router-dom";
 import router from "./router/Router";
+import {RouterProvider} from "react-router-dom";
+import {ChakraProvider} from "@chakra-ui/react";
+import {store} from "./redux/store";
+import {Provider} from "react-redux";
+import Navbar from "./components/Navbar";
+import {CopyNavbar} from "./components/CopyNavbar";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <ChakraProvider>
-        <RouterProvider router={router} />
-    </ChakraProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <Provider store={store}>
+            <ChakraProvider>
+                {/*<CopyNavbar />*/}
+                <RouterProvider router={router} />
+            </ChakraProvider>
+        </Provider>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

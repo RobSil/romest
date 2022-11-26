@@ -3,17 +3,22 @@ package com.robsil.mainservice.model.dto.request
 import org.hibernate.validator.constraints.Length
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 
 data class PostCreateRequest(
     @field:NotNull
     val boardId: Long,
 
-    @Length(min = 1, max = 128)
+    @field:Length(min = 1, max = 128)
     val title: String?,
 
-    @Length(min = 1, max = 1024)
+    @field:Length(min = 1, max = 1024)
     val text: String?,
+
+    @field:NotNull
+    @field:Size(min = 1)
+    val tags: Set<String>,
 )
 
 data class PostSaveRequest(

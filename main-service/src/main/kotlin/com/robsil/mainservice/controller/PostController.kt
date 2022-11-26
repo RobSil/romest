@@ -10,6 +10,7 @@ import com.robsil.mainservice.model.exception.NotFoundException
 import com.robsil.mainservice.service.PostService
 import com.robsil.mainservice.service.facade.PostServiceFacade
 import com.robsil.mainservice.util.dtoFactories.toSimpleDto
+import com.robsil.mainservice.util.validators.annotations.MultipartFileImageConstraint
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -39,8 +40,8 @@ class PostController(
 
     @GetMapping
     @Deprecated(message = "getAll - is intended only for testing purposes.", level = DeprecationLevel.WARNING)
-    fun getAll(): List<Post> {
-        val posts: List<Post>  = postService.getAll()
+    fun getAll(): List<SimplePostDto> {
+        val posts  = postServiceFacade.getAllByTagsRelevant().map { it.toSimpleDto() }
 
         return posts
     }
@@ -58,7 +59,7 @@ class PostController(
             Content(mediaType = "application/json", schema = Schema(implementation = NotFoundException::class))
         ]),
     )
-    fun create(@Valid @RequestPart dto: PostCreateRequest, @RequestPart file: MultipartFile): ResponseEntity<SimplePostDto> =
+    fun create(@Valid @RequestPart dto: PostCreateRequest, @MultipartFileImageConstraint @RequestPart file: MultipartFile): ResponseEntity<SimplePostDto> =
         ResponseEntity(postServiceFacade.savePost(dto, file).toSimpleDto(), HttpStatus.CREATED)
 
     @PutMapping("/{postId}")

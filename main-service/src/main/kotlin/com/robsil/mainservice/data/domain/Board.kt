@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
+//@Table(name = "boards", uniqueConstraints = )
 @Table(name = "boards")
 class Board(
     @Column
@@ -16,7 +17,7 @@ class Board(
     @Column(name = "minimized_name")
     @NotNull
     @NotBlank
-    val minimizedName: String,
+    var minimizedName: String,
 
     @Column(name = "is_private")
     @NotNull

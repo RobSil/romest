@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 import javax.validation.constraints.NotNull
@@ -42,11 +43,19 @@ class BoardController(
         return ResponseEntity(posts.map { it.toSimpleDto() }, HttpStatus.OK)
     }
 
+    @GetMapping("/byUsernameAndMinimizedName")
+    fun getByUsernameAndMinimizedName(@RequestParam username: String, @RequestParam minimizedName: String): ResponseEntity<SimpleBoardDto> {
+        return ResponseEntity(boardService.getByUsernameAndMinimizedName(username, minimizedName).toSimpleDto(), HttpStatus.OK)
+    }
+//    fun get
+
     @PostMapping
-    fun create(@RequestBody dto: BoardCreateDto, principal: Principal?): ResponseEntity<SimpleBoardDto> = ResponseEntity(boardService.create(dto, userService.getByPrincipal(principal)).toSimpleDto(), HttpStatus.OK)
+    fun create(@RequestBody dto: BoardCreateDto, principal: Principal?): ResponseEntity<SimpleBoardDto> =
+        ResponseEntity(boardService.create(dto, userService.getByPrincipal(principal)).toSimpleDto(), HttpStatus.CREATED)
 
     @PutMapping
-    fun save(@RequestBody dto: BoardSaveDto, principal: Principal?): ResponseEntity<SimpleBoardDto> = ResponseEntity(boardService.save(dto, userService.getByPrincipal(principal)).toSimpleDto(), HttpStatus.OK)
+    fun save(@RequestBody dto: BoardSaveDto, principal: Principal?): ResponseEntity<SimpleBoardDto> =
+        ResponseEntity(boardService.save(dto, userService.getByPrincipal(principal)).toSimpleDto(), HttpStatus.OK)
 
     @DeleteMapping("/{boardId}")
     fun deleteById(@PathVariable boardId: Long, principal: Principal?) {

@@ -25,6 +25,14 @@ class Post(
 //    val photos: List<Photo>
 ) : BaseEntity() {
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "posts_tags",
+        joinColumns = arrayOf(JoinColumn(name = "post_id", referencedColumnName = "id")),
+        inverseJoinColumns = arrayOf(JoinColumn(name = "tag_id", referencedColumnName = "id"))
+    )
+    var tags: MutableSet<Tag> = mutableSetOf()
+
     constructor(id: Long, title: String?, text: String?, board: Board, photo: Photo) : this(title, text, board, photo) {
         this.id = id
     }

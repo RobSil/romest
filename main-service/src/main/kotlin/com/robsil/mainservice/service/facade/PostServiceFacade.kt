@@ -13,4 +13,5 @@ interface PostServiceFacade {
 
     fun deletePost(postId: Long): Unit
 
+    fun getAllByTagsRelevant(): List<Post>
 }

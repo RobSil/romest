@@ -72,6 +72,7 @@ project("main-service") {
 		implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 		implementation("org.springframework.boot:spring-boot-starter-data-redis")
 		implementation("org.springframework.boot:spring-boot-starter-security")
+		implementation("org.springframework.boot:spring-boot-starter-graphql")
 		implementation("org.springframework.boot:spring-boot-configuration-processor")
 		implementation("org.springframework.boot:spring-boot-starter-validation")
 		implementation("org.springframework.session:spring-session-data-redis")

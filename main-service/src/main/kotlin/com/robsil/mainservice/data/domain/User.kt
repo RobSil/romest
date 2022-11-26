@@ -1,5 +1,6 @@
 package com.robsil.mainservice.data.domain
 
+import com.robsil.mainservice.model.UserInformationDto
 import com.robsil.mainservice.model.enum.ERole
 import javax.persistence.*
 import javax.validation.constraints.Email
@@ -9,6 +10,11 @@ import javax.validation.constraints.NotNull
 @Entity
 @Table(name = "users")
 class User(
+
+    @NotBlank
+    @Column(name = "username", unique = true, nullable = false)
+    var username: String,
+
     @Email
     @NotBlank
     @Column(name = "email", unique = true)
@@ -25,7 +31,7 @@ class User(
 
     ) : BaseEntity() {
 
-    constructor(id: Long, email: String, passwordHash: String, isBlocked: Boolean) : this(email, passwordHash, isBlocked) {
+    constructor(id: Long, username: String, email: String, passwordHash: String, isBlocked: Boolean) : this(username, email, passwordHash, isBlocked) {
         this.id = id
     }
 
@@ -36,6 +42,8 @@ class User(
         inverseJoinColumns = arrayOf(JoinColumn(name = "role_id", referencedColumnName = "id"))
     )
     var roles: MutableSet<Role> = mutableSetOf()
+
+//    var likes: MutableSet<Like> = mutableSetOf()
 
     fun addRole(role: Role): Set<Role> {
 
@@ -71,5 +79,7 @@ class User(
         return result
     }
 
-
+    fun toInformationDto(): UserInformationDto {
+        return UserInformationDto(this.id, this.username, this.email, this.roles.map { it.title }.toMutableSet())
+    }
 }

@@ -1,32 +1,38 @@
 package com.robsil.mainservice.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.robsil.mainservice.data.repository.UserRepository
+import com.robsil.mainservice.model.UserInformationDto
 import com.robsil.mainservice.model.exception.NotFoundException
+import com.robsil.mainservice.model.exception.UnauthorizedException
+import com.robsil.mainservice.service.UserService
 import org.apache.logging.log4j.kotlin.logger
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import java.security.Principal
 
 
 @Configuration
 class SecurityConfig(
-    val userRepository: UserRepository
+    val userService: UserService,
+    val objectMapper: ObjectMapper,
+
+    @Value("\${spring.authentication.unauthorized-message}")
+    private val unauthorizedMessage: String,
 ) : WebSecurityCustomizer {
     val logger = logger()
 
@@ -47,15 +53,12 @@ class SecurityConfig(
     }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder()
-    }
-
-    @Bean
     fun filterChain(
         http: HttpSecurity,
 //                    sessionRegistry: SessionRegistry
     ): SecurityFilterChain {
+
+        http.cors()
 
 //        val authenticationManagerBuilder = http.getSharedObject(
 //            AuthenticationManagerBuilder::class.java
@@ -65,9 +68,16 @@ class SecurityConfig(
         val userDetailsService = UserDetailsService { username ->
             logger.info("loadUserByUsername: inside the method. Username: $username")
             username ?: throw NotFoundException()
-            val user = userRepository.findByEmail(username) ?: throw UsernameNotFoundException("User cannot be found.")
+            val user = try {
+                userService.getByEmail(username)
+            } catch (e: Exception) {
+                throw UsernameNotFoundException("User cannot be found.")
+            }
 
             User(user.email, user.passwordHash, user.roles.map { SimpleGrantedAuthority(it.title) })
+//            val user = userRepository.findByEmail(username) ?: throw UsernameNotFoundException("User cannot be found.")
+//
+//            User(user.email, user.passwordHash, user.roles.map { SimpleGrantedAuthority(it.title) })
         }
 
         http.userDetailsService(userDetailsService)
@@ -79,6 +89,16 @@ class SecurityConfig(
         http.authenticationProvider(provider)
 
         http
+            .exceptionHandling()
+            .authenticationEntryPoint { req, res, e ->
+
+                res.status = HttpStatus.UNAUTHORIZED.value()
+                res.writer.write(unauthorizedMessage)
+                res.writer.flush()
+
+            }
+
+        http
             .csrf()
             .disable()
 
@@ -86,22 +106,35 @@ class SecurityConfig(
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
             .maximumSessions(5)
-            .expiredUrl("/login")
+//            .expiredUrl("/api/login")
 //            .sessionAuthenticationStrategy(SessionAuthe)
 //            .sessionRegistry(sessionRegistry)
 
         http
             .formLogin()
 //            .loginPage("/api/login")
-            .loginProcessingUrl("/login")
-            .successHandler { req, res, e -> res.status = 200 }
+            .loginProcessingUrl("/api/login")
+            .successHandler { req, res, authentication ->
+                res.status = HttpStatus.OK.value()
+
+                try {
+                    val user = userService.getByEmail(userService.getNameFromPrincipals(authentication))
+
+                    val dto = user.toInformationDto()
+
+                    res.writer.write(objectMapper.writeValueAsString(dto))
+                    res.writer.flush()
+                } catch (e: Exception) {
+                    throw UnauthorizedException("Occurred unexpectable situation..", e)
+                }
+            }
             .failureHandler { req, res, e ->
-                res.setStatus(401)
+                res.status = HttpStatus.UNAUTHORIZED.value()
             }
 
             .and()
             .logout()
-            .logoutUrl("/logout")
+            .logoutUrl("/api/logout")
             .invalidateHttpSession(true)
             .deleteCookies("SESSION", "JSESSIONID")
             .logoutSuccessHandler { req, res, e -> res.status = 200 }
@@ -120,7 +153,8 @@ class SecurityConfig(
 
         http
             .authorizeRequests()
-            .anyRequest()
+//            .anyRequest()
+            .antMatchers("/api/**")
             .authenticated()
 
 //        http

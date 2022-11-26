@@ -8,7 +8,8 @@ import com.robsil.mainservice.data.repository.PostRepository
 import com.robsil.mainservice.model.dto.PostCreateDto
 import com.robsil.mainservice.model.dto.PostSaveDto
 import com.robsil.mainservice.model.enum.ERole
-import com.robsil.mainservice.model.exception.ExceptionMessages.UNAUTHORIZED_BOARD_USER
+import com.robsil.mainservice.model.exception.ExceptionMessages.FORBIDDEN_BOARD_FOR_USER
+import com.robsil.mainservice.model.exception.ForbiddenException
 import com.robsil.mainservice.model.exception.NotFoundException
 import com.robsil.mainservice.model.exception.UnauthorizedException
 import com.robsil.mainservice.model.exception.constant.PostExceptionMessages
@@ -19,6 +20,7 @@ import com.robsil.mainservice.service.UserService
 import org.apache.logging.log4j.kotlin.logger
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.lang.IllegalArgumentException
 
 @Service
 @Transactional
@@ -55,6 +57,14 @@ class PostServiceImpl(
         return postRepository.findAllByBoardId(boardId)
     }
 
+    override fun getAllByTagsRelevant(tags: List<Long>, userId: Long): List<Post> {
+        return postRepository.findAllByTagsRelevant(tags, userId)
+    }
+
+    override fun getAllByTagsRelevant(tags: List<Long>): List<Post> {
+        return postRepository.findAllByTagsRelevant(tags)
+    }
+
     override fun saveEntity(post: Post): Post {
         return postRepository.save(post)
     }
@@ -67,6 +77,8 @@ class PostServiceImpl(
         val photo: Photo = photoService.getById(dto.photoId)
 
         var post = Post(dto.title, dto.text, board, photo)
+
+        post.tags.addAll(dto.tags)
 
         post = saveEntity(post)
 
@@ -103,7 +115,7 @@ class PostServiceImpl(
     private fun verifyBoardUser(board: Board, currentUser: User) {
         if (board.user.id != currentUser.id &&
             !currentUser.roles.any { role -> role.title == ERole.ADMIN.title || role.title == ERole.SUPERADMIN.title }) {
-            throw UnauthorizedException(UNAUTHORIZED_BOARD_USER)
+            throw ForbiddenException(FORBIDDEN_BOARD_FOR_USER)
         }
     }
 }

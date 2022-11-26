@@ -45,10 +45,11 @@ class InitService(
             return
         }
 
+        val username = "admin"
         val email = "admin@robsil.com"
         val rawPassword = "1414"
 
-        val saUser = User(email, passwordEncoder.encode(rawPassword), false)
+        val saUser = User(username, email, passwordEncoder.encode(rawPassword), false)
         saUser.addRole(roleService.getByName(ERole.SUPERADMIN))
 
         userRepository.save(saUser)

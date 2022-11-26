@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.robsil.mainservice.model.exception.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -31,6 +30,16 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(ForbiddenException::class)
     fun onForbiddenException(e: ForbiddenException): ResponseEntity<String> {
+        return ResponseEntity(objectMapper.writeValueAsString(e), HttpStatus.valueOf(e.status))
+    }
+
+    @ExceptionHandler(UnauthorizedException::class)
+    fun onUnauthorizedException(e: UnauthorizedException): ResponseEntity<String> {
+        return ResponseEntity(objectMapper.writeValueAsString(e), HttpStatus.valueOf(e.status))
+    }
+
+    @ExceptionHandler(DataUniqueViolationException::class)
+    fun onDataUniqueViolationException(e: DataUniqueViolationException): ResponseEntity<String> {
         return ResponseEntity(objectMapper.writeValueAsString(e), HttpStatus.valueOf(e.status))
     }
 
