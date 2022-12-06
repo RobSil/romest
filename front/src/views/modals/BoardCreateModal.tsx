@@ -9,7 +9,6 @@ import {
     ModalHeader,
     ModalOverlay, Stack, useToast,
 } from "@chakra-ui/react";
-import {validateEmail, validatePassword} from "../authorization/LoginUtil";
 import BoardService from "../../services/BoardService";
 import {useNavigate} from "react-router-dom";
 
@@ -43,7 +42,7 @@ const BoardCreateModal: FC<ModalProps> = ({isOpen, onClose}) => {
 
     const createBoard = () => {
 
-        if (validateBoardName(name)) {
+        if (!validateBoardName(name)) {
             toast({
                 title: 'Invalid name.',
                 description: "Name should longer than 3 chars, and shorter than 64 chars.",
@@ -63,8 +62,19 @@ const BoardCreateModal: FC<ModalProps> = ({isOpen, onClose}) => {
                         duration: 5000,
                         isClosable: true,
                     })
-                    navigate("")
+                    navigate(`/${req.data.user.username}/${req.data.minimizedName}`)
                     return
+                }
+                if (req.request.status === 400) {
+                    if (req.request.response === "Board with similar name is already exists.") {
+                        toast({
+                            title: 'During creating board occurred error, board with similar name is already exists.',
+                            status: 'error',
+                            duration: 5000,
+                            isClosable: true,
+                        })
+                        return
+                    }
                 }
             })
     }

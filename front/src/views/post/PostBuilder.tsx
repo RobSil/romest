@@ -1,20 +1,16 @@
-import {FC, MutableRefObject, useRef, useState} from "react";
+import {FC, useState} from "react";
 import {
     Box, BoxProps,
     Button,
     Flex,
     FormControl,
-    FormErrorMessage,
     FormLabel,
     forwardRef,
     Heading,
-    Input, Stack,
+    Input,
     Textarea,
-    Text, InputGroup, InputLeftElement, Icon, useToast
+    InputGroup, useToast
 } from "@chakra-ui/react";
-import {validateEmail} from "../authorization/LoginUtil";
-import {Simulate} from "react-dom/test-utils";
-import invalid = Simulate.invalid;
 
 const PostBuilder: FC = () => {
 
@@ -90,7 +86,7 @@ const PostBuilder: FC = () => {
                                     type={"file"}
                                     onChange={(e) => {
                                         if (e.target.files != null) {
-                                            if (e.target.files.length == 1) {
+                                            if (e.target.files.length === 1) {
                                                 setImage(e.target.files[0])
                                             }
                                         }

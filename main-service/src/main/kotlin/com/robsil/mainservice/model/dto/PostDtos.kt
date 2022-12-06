@@ -43,3 +43,16 @@ data class SimplePostDto(
     val title: String?,
     val text: String?
 )
+
+data class ComplexPostDto(
+    val id: Long,
+    val title: String?,
+    val text: String?,
+    val photo: SimplePhotoDto,
+)
+
+data class ComplexPostPageableDto(
+    val posts: List<ComplexPostDto>,
+    val totalElements: Long,
+    val totalPages: Int,
+)

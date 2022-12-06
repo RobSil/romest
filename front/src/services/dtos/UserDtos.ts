@@ -7,6 +7,11 @@ export interface UserInformationDto {
     roles: string[]
 }
 
+export interface UserSimpleDto {
+    username: string
+    email: string
+}
+
 export interface EmailPasswordPair {
     email: string,
     password: string

@@ -1,6 +1,7 @@
 package com.robsil.mainservice.data.domain
 
 import com.robsil.mainservice.model.UserInformationDto
+import com.robsil.mainservice.model.UserSimpleDto
 import com.robsil.mainservice.model.enum.ERole
 import javax.persistence.*
 import javax.validation.constraints.Email
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull
 @Table(name = "users")
 class User(
 
+    // should only contain: a-zA-Z1-9 and -_~
     @NotBlank
     @Column(name = "username", unique = true, nullable = false)
     var username: String,
@@ -81,5 +83,9 @@ class User(
 
     fun toInformationDto(): UserInformationDto {
         return UserInformationDto(this.id, this.username, this.email, this.roles.map { it.title }.toMutableSet())
+    }
+
+    fun toSimpleDto(): UserSimpleDto {
+        return UserSimpleDto(this.username, this.email)
     }
 }

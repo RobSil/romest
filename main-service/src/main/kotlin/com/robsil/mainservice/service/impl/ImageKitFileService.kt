@@ -1,6 +1,7 @@
 package com.robsil.mainservice.service.impl
 
 import com.robsil.mainservice.data.domain.Photo
+import com.robsil.mainservice.model.dto.SimplePhotoDto
 import com.robsil.mainservice.model.enum.FileType
 import com.robsil.mainservice.model.enum.StoringSource
 import com.robsil.mainservice.model.image.ImageSaveResult
@@ -28,6 +29,13 @@ class ImageKitFileService(
     ): FileService {
 
     val log = logger()
+
+    override fun getPhotoSource(photo: Photo): SimplePhotoDto {
+        if (photo.storingSource != StoringSource.IMAGEKIT)
+            throw IllegalArgumentException("Storing source should be imageKit to delete it here.")
+
+        return SimplePhotoDto(photo.path, photo.storingSource, photo.imageKitId, photo.imageKitUrl, ByteArray(0))
+    }
 
     override fun saveAvatar(folderPath: String, fileName: String, fileType: FileType, multipartFile: MultipartFile): File {
         TODO("Not yet implemented")

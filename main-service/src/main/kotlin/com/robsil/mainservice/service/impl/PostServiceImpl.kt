@@ -11,16 +11,16 @@ import com.robsil.mainservice.model.enum.ERole
 import com.robsil.mainservice.model.exception.ExceptionMessages.FORBIDDEN_BOARD_FOR_USER
 import com.robsil.mainservice.model.exception.ForbiddenException
 import com.robsil.mainservice.model.exception.NotFoundException
-import com.robsil.mainservice.model.exception.UnauthorizedException
 import com.robsil.mainservice.model.exception.constant.PostExceptionMessages
 import com.robsil.mainservice.service.BoardService
 import com.robsil.mainservice.service.PhotoService
 import com.robsil.mainservice.service.PostService
 import com.robsil.mainservice.service.UserService
 import org.apache.logging.log4j.kotlin.logger
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalArgumentException
 
 @Service
 @Transactional
@@ -47,14 +47,18 @@ class PostServiceImpl(
             }
     }
 
-    override fun getPostsByBoard(boardId: Long): List<Post> {
+    override fun getAllByBoardId(boardId: Long): List<Post> {
         val board = boardService.getById(boardId)
 
         return postRepository.findAllByBoard(board)
     }
 
-    override fun getPostsByBoardId(boardId: Long): List<Post> {
-        return postRepository.findAllByBoardId(boardId)
+    override fun getAllByBoard(board: Board): List<Post> {
+        return postRepository.findAllByBoardId(board.id!!)
+    }
+
+    override fun getAllByBoardId(boardId: Long, pageable: Pageable): Page<Post> {
+        return postRepository.findAllByBoardIdPageable(boardId, pageable)
     }
 
     override fun getAllByTagsRelevant(tags: List<Long>, userId: Long): List<Post> {

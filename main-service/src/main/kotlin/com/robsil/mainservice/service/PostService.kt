@@ -1,9 +1,11 @@
 package com.robsil.mainservice.service
 
+import com.robsil.mainservice.data.domain.Board
 import com.robsil.mainservice.data.domain.Post
-import com.robsil.mainservice.data.domain.User
 import com.robsil.mainservice.model.dto.PostCreateDto
 import com.robsil.mainservice.model.dto.PostSaveDto
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 interface PostService {
 
@@ -12,9 +14,10 @@ interface PostService {
 
     fun getById(id: Long): Post
 
-    fun getPostsByBoard(boardId: Long): List<Post>
+    fun getAllByBoardId(boardId: Long): List<Post>
 
-    fun getPostsByBoardId(boardId: Long): List<Post>
+    fun getAllByBoardId(boardId: Long, pageable: Pageable): Page<Post>
+    fun getAllByBoard(board: Board): List<Post>
 
     fun getAllByTagsRelevant(tags: List<Long>): List<Post>
 

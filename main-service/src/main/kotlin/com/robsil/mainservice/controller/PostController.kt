@@ -1,6 +1,5 @@
 package com.robsil.mainservice.controller
 
-import com.robsil.mainservice.data.domain.Post
 import com.robsil.mainservice.model.dto.PostSaveDto
 import com.robsil.mainservice.model.dto.request.PostCreateRequest
 import com.robsil.mainservice.model.dto.SimplePostDto
@@ -41,30 +40,42 @@ class PostController(
     @GetMapping
     @Deprecated(message = "getAll - is intended only for testing purposes.", level = DeprecationLevel.WARNING)
     fun getAll(): List<SimplePostDto> {
-        val posts  = postServiceFacade.getAllByTagsRelevant().map { it.toSimpleDto() }
+        val posts = postServiceFacade.getAllByTagsRelevant().map { it.toSimpleDto() }
 
         return posts
     }
 
+
     @PostMapping(consumes = [MediaType.MULTIPART_FORM_DATA_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(summary = "Create a post")
     @ApiResponses(
-        ApiResponse(responseCode = "201", description = "Successfully created.", content = [
-            Content(mediaType = "application/json", schema = Schema(implementation = SimplePostDto::class))
-        ]),
-        ApiResponse(responseCode = "403", description = "User doesn't match with board owner.", content = [
-            Content(mediaType = "application/json", schema = Schema(implementation = ForbiddenException::class))
-        ]),
-        ApiResponse(responseCode = "404", description = "Board not found.", content = [
-            Content(mediaType = "application/json", schema = Schema(implementation = NotFoundException::class))
-        ]),
+        ApiResponse(
+            responseCode = "201", description = "Successfully created.", content = [
+                Content(mediaType = "application/json", schema = Schema(implementation = SimplePostDto::class))
+            ]
+        ),
+        ApiResponse(
+            responseCode = "403", description = "User doesn't match with board owner.", content = [
+                Content(mediaType = "application/json", schema = Schema(implementation = ForbiddenException::class))
+            ]
+        ),
+        ApiResponse(
+            responseCode = "404", description = "Board not found.", content = [
+                Content(mediaType = "application/json", schema = Schema(implementation = NotFoundException::class))
+            ]
+        ),
     )
-    fun create(@Valid @RequestPart dto: PostCreateRequest, @MultipartFileImageConstraint @RequestPart file: MultipartFile): ResponseEntity<SimplePostDto> =
+    fun create(
+        @Valid @RequestPart dto: PostCreateRequest,
+        @MultipartFileImageConstraint @RequestPart file: MultipartFile
+    ): ResponseEntity<SimplePostDto> =
         ResponseEntity(postServiceFacade.savePost(dto, file).toSimpleDto(), HttpStatus.CREATED)
 
     @PutMapping("/{postId}")
-    fun save(@PathVariable postId: Long,
-             @Valid @RequestBody dto: PostSaveRequest) =
+    fun save(
+        @PathVariable postId: Long,
+        @Valid @RequestBody dto: PostSaveRequest
+    ) =
         ResponseEntity(postService.save(PostSaveDto(postId, dto)).toSimpleDto(), HttpStatus.OK)
 
     @DeleteMapping("/{postId}")

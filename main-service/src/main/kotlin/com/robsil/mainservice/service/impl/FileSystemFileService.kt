@@ -1,6 +1,7 @@
 package com.robsil.mainservice.service.impl
 
 import com.robsil.mainservice.data.domain.Photo
+import com.robsil.mainservice.model.dto.SimplePhotoDto
 import com.robsil.mainservice.model.enum.FileType
 import com.robsil.mainservice.model.enum.StoringSource
 import com.robsil.mainservice.model.image.ImageSaveResult
@@ -25,6 +26,15 @@ class FileSystemFileService(
 ) : FileService {
 
     private val log = logger()
+
+    override fun getPhotoSource(photo: Photo): SimplePhotoDto {
+        if (photo.storingSource != StoringSource.FILE_SYSTEM)
+            throw IllegalArgumentException("Storing source should be imageKit to delete it here.")
+
+        val file = Files.readAllBytes(Path.of(photo.path))
+
+        return SimplePhotoDto(photo.path, photo.storingSource, "", "", file)
+    }
 
     private fun save(path: Path, multipartFile: MultipartFile): File {
         val createdFile: Path = Files.createFile(path)

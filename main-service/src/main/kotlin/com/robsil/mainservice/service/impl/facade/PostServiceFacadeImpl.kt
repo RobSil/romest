@@ -4,6 +4,7 @@ import com.robsil.mainservice.data.domain.Board
 import com.robsil.mainservice.data.domain.Post
 import com.robsil.mainservice.data.domain.Tag
 import com.robsil.mainservice.data.domain.User
+import com.robsil.mainservice.model.dto.ComplexPostDto
 import com.robsil.mainservice.model.dto.PostCreateDto
 import com.robsil.mainservice.model.dto.request.PostCreateRequest
 import com.robsil.mainservice.model.dto.request.TagCreateRequest
@@ -12,6 +13,7 @@ import com.robsil.mainservice.model.exception.ForbiddenException
 import com.robsil.mainservice.model.exception.IllegalRequestPayloadException
 import com.robsil.mainservice.model.exception.InternalServerErrorException
 import com.robsil.mainservice.service.*
+import com.robsil.mainservice.service.facade.PhotoServiceFacade
 import com.robsil.mainservice.service.facade.PostServiceFacade
 import com.robsil.mainservice.util.compareToOrElseThrow
 import org.apache.logging.log4j.kotlin.logger
@@ -24,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile
 class PostServiceFacadeImpl(
     private val postService: PostService,
 //    private val photoService: PhotoService,
-    private val photoServiceFacade: PhotoServiceFacadeImpl,
+    private val photoServiceFacade: PhotoServiceFacade,
     private val boardService: BoardService,
     private val userService: UserService,
     private val likeService: LikeService,
@@ -33,6 +35,11 @@ class PostServiceFacadeImpl(
 
     private val log = logger()
 
+    override fun toComplexPostDto(post: Post): ComplexPostDto {
+        val simplePhotoDto = photoServiceFacade.toSimplePhotoDto(post.photo)
+
+        return ComplexPostDto(post.id!!, post.title, post.text, simplePhotoDto)
+    }
     override fun getAllByBoardId(boardId: Long, user: User): List<Post> {
         val board = boardService.getById(boardId)
 
@@ -40,7 +47,7 @@ class PostServiceFacadeImpl(
             board.user.id.compareToOrElseThrow(user.id, ForbiddenException(ExceptionMessages.USERS_DOESNT_MATCH))
         }
 
-        return postService.getPostsByBoardId(board.id!!)
+        return postService.getAllByBoard(board)
     }
 
     override fun getAllByTagsRelevant(): List<Post> {

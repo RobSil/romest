@@ -1,5 +1,7 @@
 package com.robsil.mainservice.data.domain
 
+import com.robsil.mainservice.model.dto.CompleteBoardDto
+import com.robsil.mainservice.model.dto.SimpleBoardDto
 import com.robsil.mainservice.util.minimize
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
@@ -82,5 +84,15 @@ class Board(
         var result = name.hashCode()
         result = 31 * result + isPrivate.hashCode()
         return result
+    }
+
+    fun toSimpleDto(): SimpleBoardDto {
+        return SimpleBoardDto(this.id, this.name, this.isPrivate)
+//    return if (this.id != null) SimpleBoardDto(this.id, this.name, this.isPrivate)
+//    else SimpleBoardDto(-1L, this.name, this.isPrivate)
+    }
+
+    fun toCompleteDto(): CompleteBoardDto {
+        return CompleteBoardDto(this.id, this.name, this.minimizedName, this.isPrivate, this.user.toSimpleDto())
     }
 }

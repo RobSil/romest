@@ -1,7 +1,5 @@
 package com.robsil.mainservice.model
 
-import com.robsil.mainservice.data.domain.Role
-import com.robsil.mainservice.model.enum.ERole
 import org.hibernate.validator.constraints.Length
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -21,6 +19,10 @@ data class UserRegisterDto(
     val password: String
 )
 
+data class UserSimpleDto(
+    val username: String,
+    val email: String,
+)
 data class UserInformationDto(
     val id: Long?,
     val username: String,

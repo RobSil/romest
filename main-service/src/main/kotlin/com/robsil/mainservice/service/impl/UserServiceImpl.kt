@@ -5,14 +5,12 @@ import com.robsil.mainservice.data.repository.UserRepository
 import com.robsil.mainservice.model.UserRegisterDto
 import com.robsil.mainservice.model.enum.ERole
 import com.robsil.mainservice.model.exception.DataUniqueViolationException
-import com.robsil.mainservice.model.exception.ForbiddenException
 import com.robsil.mainservice.model.exception.NotFoundException
 import com.robsil.mainservice.model.exception.UnauthorizedException
 import com.robsil.mainservice.model.exception.constant.PostExceptionMessages.PRINCIPAL_NULL
 import com.robsil.mainservice.service.RoleService
 import com.robsil.mainservice.service.UserService
 import org.apache.logging.log4j.kotlin.logger
-import org.springframework.boot.actuate.endpoint.SecurityContext
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
@@ -78,6 +76,10 @@ class UserServiceImpl(
 
     fun saveEntity(user: User): User {
         return userRepository.save(user)
+    }
+
+    fun validateUsername(username: String) {
+
     }
 
     override fun register(dto: UserRegisterDto): User {

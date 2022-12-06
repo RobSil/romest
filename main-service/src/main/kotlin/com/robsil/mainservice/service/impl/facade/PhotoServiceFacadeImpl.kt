@@ -1,7 +1,7 @@
 package com.robsil.mainservice.service.impl.facade
 
 import com.robsil.mainservice.data.domain.Photo
-import com.robsil.mainservice.data.domain.Post
+import com.robsil.mainservice.model.dto.SimplePhotoDto
 import com.robsil.mainservice.service.FileService
 import com.robsil.mainservice.service.PhotoService
 import com.robsil.mainservice.service.facade.PhotoServiceFacade
@@ -18,6 +18,10 @@ class PhotoServiceFacadeImpl(
 ) : PhotoServiceFacade {
 
     val stringLength = 10
+
+    override fun toSimplePhotoDto(photo: Photo): SimplePhotoDto {
+        return fileService.getPhotoSource(photo)
+    }
 
     override fun save(minimizedBoardName: String, multipartFile: MultipartFile): Photo {
         val imageSaveResult = fileService.savePhoto(minimizedBoardName, getRandomString(stringLength), multipartFile)
