@@ -14,6 +14,8 @@ interface PostServiceFacade {
 
     fun savePost(dto: PostCreateRequest, multipartFile: MultipartFile): Post
 
+    fun repinPost(postId: Long, boardId: Long, user: User): Post
+
     fun deletePost(postId: Long): Unit
 
     fun getAllByTagsRelevant(): List<Post>

@@ -1,3 +1,4 @@
+import {SimplePhotoDto} from "./PhotoDtos";
 
 
 export interface UserInformationDto {
@@ -19,4 +20,9 @@ export interface EmailPasswordPair {
 export interface UserRegistrationRequest {
     email: string,
     password: string,
+}
+
+export interface ComplexUserDto {
+    username: String
+    avatar: SimplePhotoDto
 }

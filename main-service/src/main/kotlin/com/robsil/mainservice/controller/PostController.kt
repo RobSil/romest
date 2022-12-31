@@ -1,12 +1,17 @@
 package com.robsil.mainservice.controller
 
+import com.robsil.mainservice.model.dto.ComplexPostDto
+import com.robsil.mainservice.model.dto.LikeResponse
 import com.robsil.mainservice.model.dto.PostSaveDto
 import com.robsil.mainservice.model.dto.request.PostCreateRequest
 import com.robsil.mainservice.model.dto.SimplePostDto
+import com.robsil.mainservice.model.dto.request.LikePostRequest
 import com.robsil.mainservice.model.dto.request.PostSaveRequest
 import com.robsil.mainservice.model.exception.ForbiddenException
 import com.robsil.mainservice.model.exception.NotFoundException
 import com.robsil.mainservice.service.PostService
+import com.robsil.mainservice.service.UserService
+import com.robsil.mainservice.service.facade.LikeServiceFacade
 import com.robsil.mainservice.service.facade.PostServiceFacade
 import com.robsil.mainservice.util.dtoFactories.toSimpleDto
 import com.robsil.mainservice.util.validators.annotations.MultipartFileImageConstraint
@@ -25,16 +30,20 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import java.security.Principal
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v1/posts")
 class PostController(
     private val postServiceFacade: PostServiceFacade,
+    private val likeServiceFacade: LikeServiceFacade,
     private val postService: PostService,
+    private val userService: UserService,
 ) {
 
     @GetMapping
@@ -43,6 +52,21 @@ class PostController(
         val posts = postServiceFacade.getAllByTagsRelevant().map { it.toSimpleDto() }
 
         return posts
+    }
+
+    @GetMapping("/{postId}")
+    fun getById(@PathVariable postId: Long): ResponseEntity<ComplexPostDto> {
+        return ResponseEntity(postServiceFacade.toComplexPostDto(postService.getById(postId)), HttpStatus.OK)
+    }
+
+    @PostMapping("/{postId}/repin")
+    fun repinPost(@PathVariable postId: Long, @RequestParam boardId: Long, principal: Principal?): ResponseEntity<SimplePostDto> {
+        return ResponseEntity(postServiceFacade.repinPost(postId, boardId, userService.getByPrincipal(principal)).toSimpleDto(), HttpStatus.OK)
+    }
+
+    @PostMapping("/{postId}/toggleLike")
+    fun likePost(@PathVariable postId: Long): ResponseEntity<LikeResponse> {
+        return ResponseEntity(likeServiceFacade.toggleLike(LikePostRequest(postId)), HttpStatus.OK)
     }
 
 

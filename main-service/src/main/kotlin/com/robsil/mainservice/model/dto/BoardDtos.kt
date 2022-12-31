@@ -46,6 +46,12 @@ data class SimpleBoardDto(
     val isPrivate: Boolean
 )
 
+data class BoardPickDto(
+    val id: Long?,
+    val name: String,
+    val isPrivate: Boolean,
+)
+
 data class BoardDto(
     val id: Long?,
     val name: String,

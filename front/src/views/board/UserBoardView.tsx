@@ -29,10 +29,11 @@ const UserBoardView: FC = () => {
                     setPosts(req.data)
                 }
             })
-    }, [])
+    })
 
     return (
-        <></>
+        <>
+        </>
     )
 }
 

@@ -50,6 +50,10 @@ class BoardServiceImpl(
         }
     }
 
+    override fun getAllForPick(userId: Long): List<Board> {
+        return boardRepository.findAllByUserId(userId)
+    }
+
     fun countByUsernameAndMinimizedName(username: String, minimizedName: String): Long {
         return boardRepository.countByUsernameAndMinimizedName(username, minimizedName)
     }

@@ -127,7 +127,7 @@ create table if not exists public.posts
     last_modified_date timestamp without time zone,
 
     title              character varying(256)  null,
-    text               character varying(8192) not null,
+    text               character varying(8192) null,
 
     board_id           bigint                  not null,
     photo_id           bigint                  not null,

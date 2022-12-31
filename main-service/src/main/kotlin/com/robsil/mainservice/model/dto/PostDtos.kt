@@ -1,6 +1,8 @@
 package com.robsil.mainservice.model.dto
 
 import com.robsil.mainservice.data.domain.Tag
+import com.robsil.mainservice.model.ComplexUserDto
+import com.robsil.mainservice.model.UserSimpleDto
 import com.robsil.mainservice.model.dto.request.PostSaveRequest
 import org.hibernate.validator.constraints.Length
 import javax.validation.constraints.NotBlank
@@ -48,7 +50,9 @@ data class ComplexPostDto(
     val id: Long,
     val title: String?,
     val text: String?,
+    val isLiked: Boolean = false,
     val photo: SimplePhotoDto,
+    val author: ComplexUserDto,
 )
 
 data class ComplexPostPageableDto(

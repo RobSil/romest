@@ -18,7 +18,7 @@ export const TestHome: FC = () => {
         if (userData) {
             navigate("/home")
         }
-    }, [])
+    })
 
     return (
         <>

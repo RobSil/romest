@@ -1,5 +1,6 @@
 package com.robsil.mainservice.model
 
+import com.robsil.mainservice.model.dto.SimplePhotoDto
 import org.hibernate.validator.constraints.Length
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -23,6 +24,12 @@ data class UserSimpleDto(
     val username: String,
     val email: String,
 )
+
+data class ComplexUserDto(
+    val username: String,
+    val avatar: SimplePhotoDto
+)
+
 data class UserInformationDto(
     val id: Long?,
     val username: String,

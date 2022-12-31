@@ -1,5 +1,6 @@
 package com.robsil.mainservice.data.domain
 
+import com.robsil.mainservice.model.dto.BoardPickDto
 import com.robsil.mainservice.model.dto.CompleteBoardDto
 import com.robsil.mainservice.model.dto.SimpleBoardDto
 import com.robsil.mainservice.util.minimize
@@ -94,5 +95,9 @@ class Board(
 
     fun toCompleteDto(): CompleteBoardDto {
         return CompleteBoardDto(this.id, this.name, this.minimizedName, this.isPrivate, this.user.toSimpleDto())
+    }
+
+    fun toPickDto(): BoardPickDto {
+        return BoardPickDto(this.id, this.name, this.isPrivate)
     }
 }

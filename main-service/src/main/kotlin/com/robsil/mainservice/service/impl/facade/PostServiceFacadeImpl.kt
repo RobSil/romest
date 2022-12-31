@@ -4,10 +4,14 @@ import com.robsil.mainservice.data.domain.Board
 import com.robsil.mainservice.data.domain.Post
 import com.robsil.mainservice.data.domain.Tag
 import com.robsil.mainservice.data.domain.User
+import com.robsil.mainservice.model.ComplexUserDto
 import com.robsil.mainservice.model.dto.ComplexPostDto
 import com.robsil.mainservice.model.dto.PostCreateDto
+import com.robsil.mainservice.model.dto.SimplePhotoDto
 import com.robsil.mainservice.model.dto.request.PostCreateRequest
 import com.robsil.mainservice.model.dto.request.TagCreateRequest
+import com.robsil.mainservice.model.enum.ERole
+import com.robsil.mainservice.model.enum.StoringSource
 import com.robsil.mainservice.model.exception.ExceptionMessages
 import com.robsil.mainservice.model.exception.ForbiddenException
 import com.robsil.mainservice.model.exception.IllegalRequestPayloadException
@@ -38,7 +42,14 @@ class PostServiceFacadeImpl(
     override fun toComplexPostDto(post: Post): ComplexPostDto {
         val simplePhotoDto = photoServiceFacade.toSimplePhotoDto(post.photo)
 
-        return ComplexPostDto(post.id!!, post.title, post.text, simplePhotoDto)
+        val like = try {
+            val user = userService.getCurrentUser()
+            likeService.findByPostIdAndUserId(post.id!!, user.id!!)
+        } catch (_: Exception) {
+            null
+        }
+
+        return ComplexPostDto(post.id!!, post.title, post.text, like != null, simplePhotoDto, ComplexUserDto(post.board.user.username, SimplePhotoDto("", StoringSource.IMAGEKIT, "", "", ByteArray(0))))
     }
     override fun getAllByBoardId(boardId: Long, user: User): List<Post> {
         val board = boardService.getById(boardId)
@@ -48,6 +59,27 @@ class PostServiceFacadeImpl(
         }
 
         return postService.getAllByBoard(board)
+    }
+
+    override fun repinPost(postId: Long, boardId: Long, user: User): Post {
+        val board = boardService.getById(boardId)
+
+        if (board.user.id != user.id &&
+            !user.roles.any { role -> role.title == ERole.ADMIN.title || role.title == ERole.SUPERADMIN.title }) {
+            throw ForbiddenException(ExceptionMessages.FORBIDDEN_BOARD_FOR_USER)
+        }
+
+        val post = postService.getById(postId)
+
+        if (post.board.user.id != user.id &&
+            post.board.isPrivate &&
+            !user.roles.any { role -> role.title == ERole.ADMIN.title || role.title == ERole.SUPERADMIN.title }) {
+            throw ForbiddenException(ExceptionMessages.FORBIDDEN_BOARD_FOR_USER)
+        }
+
+        val newPost = postService.create(PostCreateDto(board.id!!, post.photo.id!!, post.title, post.text, post.tags))
+
+        return newPost
     }
 
     override fun getAllByTagsRelevant(): List<Post> {

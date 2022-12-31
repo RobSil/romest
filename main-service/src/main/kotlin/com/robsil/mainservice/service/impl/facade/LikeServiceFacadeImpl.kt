@@ -1,7 +1,9 @@
 package com.robsil.mainservice.service.impl.facade
 
 import com.robsil.mainservice.data.domain.Like
+import com.robsil.mainservice.model.dto.LikeResponse
 import com.robsil.mainservice.model.dto.request.LikePostRequest
+import com.robsil.mainservice.model.exception.NotFoundException
 import com.robsil.mainservice.service.LikeService
 import com.robsil.mainservice.service.PostService
 import com.robsil.mainservice.service.UserService
@@ -23,5 +25,29 @@ class LikeServiceFacadeImpl(
         val like = Like(user, post)
 
         return likeService.saveEntity(like)
+    }
+
+    override fun toggleLike(dto: LikePostRequest): LikeResponse {
+        val user = userService.getCurrentUser()
+
+        val post = postService.getById(dto.postId)
+
+        val response: LikeResponse = try {
+            val like = likeService.findByPostIdAndUserId(post.id!!, user.id!!)
+
+            likeService.deleteById(like.id!!)
+
+            LikeResponse(false)
+        } catch (e: NotFoundException) {
+            if (e.message != "LIKE_NOT_FOUND") {
+                throw e
+            }
+
+            likePost(dto)
+
+            LikeResponse(true)
+        }
+
+        return response
     }
 }

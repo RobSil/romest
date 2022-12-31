@@ -31,7 +31,7 @@ const Registration: FC = () => {
         if (getUserData() != null) {
             navigate("/home")
         }
-    }, [])
+    })
 
     const attemptRegister = () => {
         if (!email || !validateEmail(email)) {
@@ -58,7 +58,7 @@ const Registration: FC = () => {
 
         AuthService.register({email, password})
             .then((req) => {
-                if (req.request.status == 201) {
+                if (req.request.status === 201) {
                     toast({
                         title: 'Successfully registered.',
                         description: "Please login now.",

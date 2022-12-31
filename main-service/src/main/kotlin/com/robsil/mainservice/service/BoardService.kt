@@ -15,6 +15,8 @@ interface BoardService {
 
     fun getByUsernameAndMinimizedName(username: String, minimizedName: String): Board
 
+    fun getAllForPick(userId: Long): List<Board>
+
     fun create(dto: BoardCreateDto, user: User): Board
 
     fun save(dto: BoardSaveDto, user: User): Board

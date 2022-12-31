@@ -8,6 +8,9 @@ interface BoardRepository: JpaRepository<Board, Long> {
 
     fun findByName(name: String): Board?
 
+    @Query("select board from Board board where board.user.id = :userId")
+    fun findAllByUserId(userId: Long): List<Board>
+
     @Query("select board from Board board where (board.user.username = :username and board.minimizedName = :minimizedName)")
     fun findByUsernameAndMinimizedName(username: String, minimizedName: String): Board?
 

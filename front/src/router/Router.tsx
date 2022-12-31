@@ -7,6 +7,7 @@ import ProtectedElement from "../views/authorization/ProtectedElement";
 import PostBuilder from "../views/post/PostBuilder";
 import {CopyNavbar} from "../components/CopyNavbar";
 import UserBoardView from "../views/board/UserBoardView";
+import Post from "../views/post/Post";
 
 //<CopyNavbar />
 
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <CopyNavbar />,
         children: [
+            {
+                path: "post/:postId",
+                element: <ProtectedElement children={<Post />} />
+            },
             {
                 path: "post-builder",
                 element: <ProtectedElement children={<PostBuilder />} />

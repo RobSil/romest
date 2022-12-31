@@ -6,3 +6,7 @@ data class LikeDto(
     val user: UserInformationDto,
     val post: SimplePostDto
 )
+
+data class LikeResponse(
+    val isLiked: Boolean,
+)

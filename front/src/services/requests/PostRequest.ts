@@ -1,11 +1,12 @@
 import {SimplePhotoDto} from "../dtos/PhotoDtos";
+import {ComplexUserDto} from "../dtos/UserDtos";
 
 
 export interface PostCreateDto {
     boardId: number,
-    title: string,
-    text: string,
-    tags: Set<string>,
+    title: string | null,
+    text: string | null,
+    tags: string[],
 }
 
 export interface PostCreateRequest {
@@ -19,10 +20,21 @@ export interface ComplexPostPageableDto {
     totalPages: number
 }
 
+export interface SimplePostDto {
+    id: number
+    title: string
+    text: string
+}
+
 export interface ComplexPostDto {
     id: number
     title: string
     text: string
-    photo: SimplePhotoDto
+    isLiked: boolean
+    photo: SimplePhotoDto,
+    author: ComplexUserDto,
 }
 
+export interface LikeResponse {
+    isLiked: boolean
+}

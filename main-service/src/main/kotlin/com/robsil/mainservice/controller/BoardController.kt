@@ -28,15 +28,33 @@ class BoardController(
 
     // improve, user depends request
     @GetMapping("/{boardId}/posts")
-    fun getPostsByBoard(@PathVariable @NotNull boardId: Long, principal: Principal?): ResponseEntity<List<SimplePostDto>> {
+    fun getPostsByBoard(
+        @PathVariable @NotNull boardId: Long,
+        principal: Principal?
+    ): ResponseEntity<List<SimplePostDto>> {
         val posts: List<Post> = postServiceFacade.getAllByBoardId(boardId, userService.getByPrincipal(principal))
 
         return ResponseEntity(posts.map { it.toSimpleDto() }, HttpStatus.OK)
     }
 
     @GetMapping("/byUsernameAndMinimizedName")
-    fun getByUsernameAndMinimizedName(@RequestParam username: String, @RequestParam minimizedName: String, principal: Principal?): ResponseEntity<SimpleBoardDto> {
-        return ResponseEntity(boardService.getByUsernameAndMinimizedName(username, minimizedName).toSimpleDto(), HttpStatus.OK)
+    fun getByUsernameAndMinimizedName(
+        @RequestParam username: String,
+        @RequestParam minimizedName: String,
+        principal: Principal?
+    ): ResponseEntity<SimpleBoardDto> {
+        return ResponseEntity(
+            boardService.getByUsernameAndMinimizedName(username, minimizedName).toSimpleDto(),
+            HttpStatus.OK
+        )
+    }
+
+    @GetMapping("/pick")
+    fun getBoardsToPick(principal: Principal?): ResponseEntity<List<BoardPickDto>> {
+        return ResponseEntity(
+            boardService.getAllForPick(userService.getByPrincipal(principal).id!!).map { it.toPickDto() },
+            HttpStatus.OK
+        )
     }
 
     @GetMapping("/byUsernameAndMinimizedName/posts")
@@ -63,7 +81,10 @@ class BoardController(
 
     @PostMapping
     fun create(@RequestBody dto: BoardCreateDto, principal: Principal?): ResponseEntity<CompleteBoardDto> =
-        ResponseEntity(boardService.create(dto, userService.getByPrincipal(principal)).toCompleteDto(), HttpStatus.CREATED)
+        ResponseEntity(
+            boardService.create(dto, userService.getByPrincipal(principal)).toCompleteDto(),
+            HttpStatus.CREATED
+        )
 
     @PutMapping
     fun save(@RequestBody dto: BoardSaveDto, principal: Principal?): ResponseEntity<CompleteBoardDto> =

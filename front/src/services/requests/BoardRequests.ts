@@ -11,6 +11,13 @@ export interface SimpleBoardDto {
     name: string
     isPrivate: boolean
 }
+
+export interface BoardPickDto {
+    id: number
+    name: string
+    isPrivate: boolean
+}
+
 export interface CompleteBoardDto {
     id: number
     name: string

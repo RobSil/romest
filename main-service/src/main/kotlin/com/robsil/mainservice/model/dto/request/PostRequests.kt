@@ -7,13 +7,13 @@ import javax.validation.constraints.Size
 
 
 data class PostCreateRequest(
-    @field:NotNull
+//    @field:NotNull
     val boardId: Long,
 
-    @field:Length(min = 1, max = 128)
+//    @field:Length(min = 1, max = 128)
     val title: String?,
 
-    @field:Length(min = 1, max = 1024)
+//    @field:Length(min = 1, max = 1024)
     val text: String?,
 
     @field:NotNull
