@@ -6,8 +6,9 @@ import Registration from "../views/authorization/Registration";
 import ProtectedElement from "../views/authorization/ProtectedElement";
 import PostBuilder from "../views/post/PostBuilder";
 import {CopyNavbar} from "../components/CopyNavbar";
-import UserBoardView from "../views/board/UserBoardView";
+import UserBoardView, {SpecialUserBoardView} from "../views/board/UserBoardView";
 import Post from "../views/post/Post";
+import UserProfile from "../views/user/UserProfile";
 
 //<CopyNavbar />
 
@@ -53,8 +54,20 @@ const router = createBrowserRouter([
                 element: <ProtectedElement children={<PostBuilder />} />
             },
             {
+                path: ":username/posts",
+                element: <UserBoardView isSpecial={SpecialUserBoardView.ALL_POSTS} />
+            },
+            {
+                path: ":username/liked",
+                element: <UserBoardView isSpecial={SpecialUserBoardView.LIKED}/>
+            },
+            {
                 path: ":username/:minimizedName",
-                element: <UserBoardView />
+                element: <UserBoardView isSpecial={SpecialUserBoardView.DEFAULT}/>
+            },
+            {
+                path: ":username",
+                element: <UserProfile />
             },
             {
                 path: "home",

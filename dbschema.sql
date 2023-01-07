@@ -160,6 +160,8 @@ create table if not exists public.likes
     post_id            bigint not null,
     user_id            bigint not null,
 
+    unique (post_id, user_id),
+
     constraint likes_pkey primary key (id),
     constraint fk_post foreign key (post_id) references public.posts (id),
     constraint fk_user foreign key (user_id) references public.users (id)

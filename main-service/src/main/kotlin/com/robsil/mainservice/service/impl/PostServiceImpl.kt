@@ -69,6 +69,14 @@ class PostServiceImpl(
         return postRepository.findAllByTagsRelevant(tags)
     }
 
+    override fun getAllByUsername(username: String, pageable: Pageable): Page<Post> {
+        return postRepository.findAllByUsername(username, pageable)
+    }
+
+    override fun getAllLikedByUsername(username: String, pageable: Pageable): Page<Post> {
+        return postRepository.findAllLikedByUsername(username, pageable)
+    }
+
     override fun saveEntity(post: Post): Post {
         return postRepository.save(post)
     }

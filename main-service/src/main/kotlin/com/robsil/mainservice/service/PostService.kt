@@ -23,6 +23,9 @@ interface PostService {
 
     fun getAllByTagsRelevant(tags: List<Long>, userId: Long): List<Post>
 
+    fun getAllByUsername(username: String, pageable: Pageable): Page<Post>
+    fun getAllLikedByUsername(username: String, pageable: Pageable): Page<Post>
+
     fun saveEntity(post: Post): Post
 
     fun create(dto: PostCreateDto): Post

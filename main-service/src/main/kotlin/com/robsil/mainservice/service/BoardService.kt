@@ -22,4 +22,9 @@ interface BoardService {
     fun save(dto: BoardSaveDto, user: User): Board
 
     fun deleteById(boardId: Long): Unit
+
+    fun getAllByUser(targetUser: User, requestingUser: User?): List<Board>
+
+    fun getAllByUserId(userId: Long): List<Board>
+    fun getAllByUserIdAndIsPrivate(userId: Long, isPrivate: Boolean): List<Board>
 }

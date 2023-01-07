@@ -24,6 +24,8 @@ class BoardServiceImpl(
 
     private val log = logger()
 
+    val RESERVED_NAMES = mutableListOf<String>("pins", "liked")
+
     override fun getAll(): List<Board> {
         return boardRepository.findAll()
     }
@@ -50,6 +52,22 @@ class BoardServiceImpl(
         }
     }
 
+    override fun getAllByUserId(userId: Long): List<Board> {
+        return boardRepository.findAllByUserId(userId)
+    }
+
+    override fun getAllByUserIdAndIsPrivate(userId: Long, isPrivate: Boolean): List<Board> {
+        return boardRepository.findAllByUserIdAndIsPrivate(userId, isPrivate)
+    }
+
+    override fun getAllByUser(targetUser: User, requestingUser: User?): List<Board> {
+        return if (requestingUser == null || requestingUser.id != targetUser.id) {
+            getAllByUserIdAndIsPrivate(targetUser.id!!, false)
+        } else {
+            getAllByUserId(targetUser.id!!)
+        }
+    }
+
     override fun getAllForPick(userId: Long): List<Board> {
         return boardRepository.findAllByUserId(userId)
     }
@@ -73,6 +91,8 @@ class BoardServiceImpl(
             throw IllegalRequestPayloadException("Board with similar name is already exists.")
         }
 
+        validateMinimizedName(board.minimizedName)
+
         board = saveEntity(board)
 
         return board
@@ -83,19 +103,29 @@ class BoardServiceImpl(
 
         board.user.id.compareToOrElseThrow(user.id, ForbiddenException(USERS_DOESNT_MATCH))
 
-        if (board.name != dto.name && isExistsByUsernameAndMinimizedName(user.username, dto.name.minimize())) {
+        val minimizedName = dto.name.minimize()
+
+        if (board.name != dto.name && isExistsByUsernameAndMinimizedName(user.username, minimizedName)) {
             throw IllegalRequestPayloadException("Board with similar name is already exists.")
         }
 
+        validateMinimizedName(minimizedName)
+
         board.apply {
             name = dto.name
-            minimizedName = dto.name.minimize()
+            this.minimizedName = minimizedName
             isPrivate = dto.isPrivate
         }
 
         board = saveEntity(board)
 
         return board
+    }
+
+    fun validateMinimizedName(minimizedName: String): Unit {
+        if (RESERVED_NAMES.contains(minimizedName)) {
+            throw IllegalRequestPayloadException("Board can't be a reserved name.")
+        }
     }
 
     override fun deleteById(boardId: Long) {

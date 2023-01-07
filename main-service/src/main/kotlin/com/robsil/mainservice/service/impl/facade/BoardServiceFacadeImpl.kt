@@ -2,6 +2,8 @@ package com.robsil.mainservice.service.impl.facade
 
 import com.robsil.mainservice.data.domain.Board
 import com.robsil.mainservice.data.domain.Post
+import com.robsil.mainservice.data.domain.User
+import com.robsil.mainservice.model.dto.SimpleBoardDto
 import com.robsil.mainservice.model.exception.ExceptionMessages
 import com.robsil.mainservice.model.exception.ForbiddenException
 import com.robsil.mainservice.model.exception.NotFoundException
@@ -25,6 +27,16 @@ class BoardServiceFacadeImpl(
     private val postService: PostService,
     private val postServiceFacade: PostServiceFacade,
 ) : BoardServiceFacade {
+
+    override fun getAllByUserForFront(targetUser: User, requestingUser: User?): List<SimpleBoardDto> {
+        val boards = mutableListOf<SimpleBoardDto>()
+        boards.addAll(boardService.getAllByUser(targetUser, requestingUser).map { it.toSimpleDto() })
+
+        boards.add(0, SimpleBoardDto(0L, "Liked", "liked", true))
+        boards.add(0, SimpleBoardDto(0L, "All Posts", "posts", true))
+
+        return boards
+    }
 
     override fun getByUsernameAndMinimizedName(username: String, minimizedName: String): Board {
         val board = boardService.getByUsernameAndMinimizedName(username, minimizedName)

@@ -12,7 +12,9 @@ $api.interceptors.response.use((response) => {
 }, (error) => {
     error = error as AxiosError
     // useNavigate()("/login?showToast=true")
-    store.dispatch(userSlice.actions.unauthorized("unauthorized"))
+    if (error.request.status == 401) {
+        store.dispatch(userSlice.actions.unauthorized("unauthorized"))
+    }
     // let dispatch = useAppDispatch();
     // dispatch(userSlice.actions.unauthorized("unauthorized"))
     // console.log(error.request.status)

@@ -7,7 +7,7 @@ import {
     PostCreateDto,
     SimplePostDto
 } from "./requests/PostRequest";
-import {boardApiPrefix} from "./BoardService";
+import {boardApiPrefix, userApiPrefix} from "./BoardService";
 
 export const postApiPrefix = "/api/v1/posts"
 
@@ -17,6 +17,26 @@ export default class PostService {
             params: {
                 username,
                 minimizedName,
+                pageNumber,
+                pageSize
+            }
+        })
+    }
+
+    static async getAllByUsername(username: string, pageNumber: number, pageSize: number): Promise<AxiosResponse<ComplexPostPageableDto>> {
+        return $api.get(`${userApiPrefix}/${username}/posts`, {
+            params: {
+                username,
+                pageNumber,
+                pageSize
+            }
+        })
+    }
+
+    static async getAllLikedByUsername(username: string, pageNumber: number, pageSize: number): Promise<AxiosResponse<ComplexPostPageableDto>> {
+        return $api.get(`${userApiPrefix}/${username}/likedPosts`, {
+            params: {
+                username,
                 pageNumber,
                 pageSize
             }

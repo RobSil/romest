@@ -50,6 +50,14 @@ class UserServiceImpl(
             }
     }
 
+    override fun getByUsername(username: String): User {
+        return userRepository.findByUsername(username)
+            ?: run {
+                log.info("userService getByUsername: user not found. Username: $username")
+                throw NotFoundException("USER_NOT_FOUND")
+            }
+    }
+
     override fun getByPrincipal(principal: Principal?): User {
         if (principal == null) throw UnauthorizedException(PRINCIPAL_NULL)
         return getByEmail(principal.name)

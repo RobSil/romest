@@ -43,6 +43,7 @@ data class ComplexBoardWithPhotosDto(
 data class SimpleBoardDto(
     val id: Long?,
     val name: String,
+    val minimizedName: String,
     val isPrivate: Boolean
 )
 

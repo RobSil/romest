@@ -7,13 +7,12 @@ import {
     Stack,
     Collapse,
     Icon,
-    Link,
     Popover,
     PopoverTrigger,
     PopoverContent,
     useColorModeValue,
     useBreakpointValue,
-    useDisclosure,
+    useDisclosure, Link,
 } from '@chakra-ui/react';
 import {
     HamburgerIcon,
@@ -22,13 +21,13 @@ import {
     ChevronRightIcon,
 } from '@chakra-ui/icons';
 import {Outlet, useNavigate} from "react-router-dom";
-import {FC} from "react";
+import React, {FC} from "react";
+import {Link as ReactRouterLink} from "react-router-dom";
 import {getUserData, useSecureUserData, useUserData} from "../redux/reducers/UserUtil";
 import {logout} from "../redux/reducers/ActionCreators";
 import {useAppDispatch} from "../redux/reduxUtil";
 
 export const CopyNavbar: FC = () => {
-
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
@@ -111,7 +110,7 @@ export const CopyNavbar: FC = () => {
                             </Stack>
                         ) : (
                             <Stack alignItems={"baseline"} direction={"row"} spacing={6}>
-                                <h2>{userData.email}</h2>
+                                <Link as={ReactRouterLink} to={`/${userData.username}`}>{userData.email}</Link>
                                 <Button
                                     display={{base: 'none', md: 'inline-flex'}}
                                     fontSize={'sm'}

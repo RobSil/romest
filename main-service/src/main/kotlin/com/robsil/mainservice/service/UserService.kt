@@ -11,6 +11,7 @@ interface UserService {
 
     fun getById(id: Long): User
     fun getByEmail(email: String): User
+    fun getByUsername(username: String): User
 
     fun getByPrincipal(principal: Principal?): User
     fun getCurrentUser(): User

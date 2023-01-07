@@ -4,6 +4,8 @@ import com.robsil.mainservice.data.domain.Post
 import com.robsil.mainservice.data.domain.User
 import com.robsil.mainservice.model.dto.ComplexPostDto
 import com.robsil.mainservice.model.dto.request.PostCreateRequest
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.web.multipart.MultipartFile
 
 interface PostServiceFacade {
@@ -19,4 +21,8 @@ interface PostServiceFacade {
     fun deletePost(postId: Long): Unit
 
     fun getAllByTagsRelevant(): List<Post>
+
+    fun getAllByUsername(username: String, pageable: Pageable): Page<Post>
+
+    fun getAllLikedByUsername(username: String, pageable: Pageable): Page<Post>
 }

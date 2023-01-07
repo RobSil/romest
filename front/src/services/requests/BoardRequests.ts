@@ -9,6 +9,7 @@ export interface BoardCreateRequest {
 export interface SimpleBoardDto {
     id: number
     name: string
+    minimizedName: string
     isPrivate: boolean
 }
 

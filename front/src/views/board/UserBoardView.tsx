@@ -4,35 +4,82 @@ import {useParams} from "react-router-dom";
 import PostService from "../../services/PostService";
 import {SimpleBoardDto} from "../../services/requests/BoardRequests";
 import {ComplexPostDto, ComplexPostPageableDto} from "../../services/requests/PostRequest";
+import PostCard from "../post/PostCard";
+import {Box} from "@chakra-ui/react";
 
+export enum SpecialUserBoardView {
+    DEFAULT, ALL_POSTS, LIKED
+}
 
-const UserBoardView: FC = () => {
+export interface UserBoardViewProps {
+    isSpecial: SpecialUserBoardView
+}
+
+const UserBoardView: FC<UserBoardViewProps> = (props) => {
 
     const {username, minimizedName} = useParams()
 
     const [board, setBoard] = useState<SimpleBoardDto | null>(null)
-    const [posts, setPosts] = useState<ComplexPostPageableDto | null>(null)
+    const [postPageable, setPostPageable] = useState<ComplexPostPageableDto | null>(null)
 
     const [pageNumber, setPageNumber] = useState(0)
     const [pageSize, setPageSize] = useState(20)
 
     useEffect(() => {
-        BoardService.getByUsernameAndMinimizedName(username!, minimizedName!)
-            .then(req => {
-                if (req.request.status === 200) {
-                    setBoard(req.data)
-                }
+        if (props.isSpecial != SpecialUserBoardView.DEFAULT) {
+            BoardService.getByUsernameAndMinimizedName(username!, minimizedName!)
+                .then(req => {
+                    if (req.request.status === 200) {
+                        setBoard(req.data)
+                    }
+                })
+        } else {
+            setBoard({
+                minimizedName: props.isSpecial.toString(),
+                name: props.isSpecial.toString(),
+                isPrivate: true, id: 0
             })
-        PostService.getByUsernameAndBoardMinimizedName(username!, minimizedName!, pageNumber, pageSize)
-            .then(req => {
-                if (req.request.status === 200) {
-                    setPosts(req.data)
-                }
-            })
-    })
+        }
+
+        switch (props.isSpecial) {
+            case SpecialUserBoardView.DEFAULT:
+                PostService.getByUsernameAndBoardMinimizedName(username!, minimizedName!, pageNumber, pageSize)
+                    .then(req => {
+                        if (req.request.status === 200) {
+                            setPostPageable(req.data)
+                        }
+                    })
+                break
+            case SpecialUserBoardView.ALL_POSTS:
+                PostService.getAllByUsername(username!, pageNumber, pageSize)
+                    .then(req => {
+                        if (req.request.status === 200) {
+                            setPostPageable(req.data)
+                        }
+                    })
+                break
+            case SpecialUserBoardView.LIKED:
+                PostService.getAllLikedByUsername(username!, pageNumber, pageSize)
+                    .then(req => {
+                        if (req.request.status === 200) {
+                            setPostPageable(req.data)
+                        }
+                    })
+                break
+
+        }
+    }, [])
 
     return (
         <>
+            <h1>Posts:</h1>
+
+            <Box display={"flex"} flexDirection={"row"} flexWrap={"wrap"} gap={"6"}>
+                {postPageable != null ? (postPageable.posts.map((post) => {
+                    return (<PostCard post={post} cursor={"pointer"}/>)
+                })) : null}
+            </Box>
+
         </>
     )
 }

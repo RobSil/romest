@@ -88,7 +88,7 @@ class Board(
     }
 
     fun toSimpleDto(): SimpleBoardDto {
-        return SimpleBoardDto(this.id, this.name, this.isPrivate)
+        return SimpleBoardDto(this.id, this.name, this.minimizedName, this.isPrivate)
 //    return if (this.id != null) SimpleBoardDto(this.id, this.name, this.isPrivate)
 //    else SimpleBoardDto(-1L, this.name, this.isPrivate)
     }

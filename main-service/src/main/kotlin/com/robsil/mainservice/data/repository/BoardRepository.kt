@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.Query
 
 interface BoardRepository: JpaRepository<Board, Long> {
 
+    @Query("select b from Board b where b.user.id = :userId and b.isPrivate = :isPrivate")
+    fun findAllByUserIdAndIsPrivate(userId: Long, isPrivate: Boolean): List<Board>
+
     fun findByName(name: String): Board?
 
     @Query("select board from Board board where board.user.id = :userId")

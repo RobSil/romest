@@ -1,6 +1,7 @@
 package com.robsil.mainservice.controller
 
 import com.robsil.mainservice.data.domain.Post
+import com.robsil.mainservice.data.domain.User
 import com.robsil.mainservice.model.dto.*
 import com.robsil.mainservice.service.BoardService
 import com.robsil.mainservice.service.UserService
@@ -35,6 +36,21 @@ class BoardController(
         val posts: List<Post> = postServiceFacade.getAllByBoardId(boardId, userService.getByPrincipal(principal))
 
         return ResponseEntity(posts.map { it.toSimpleDto() }, HttpStatus.OK)
+    }
+
+    @GetMapping("/byUsername")
+    fun getAllByUsername(@RequestParam username: String,
+                         principal: Principal?): ResponseEntity<List<SimpleBoardDto>> {
+
+        val targetUser = userService.getByUsername(username)
+
+        val user: User? = try {
+            userService.getByPrincipal(principal)
+        } catch (_: Exception) {
+            null
+        }
+
+        return ResponseEntity(boardServiceFacade.getAllByUserForFront(targetUser, user), HttpStatus.OK)
     }
 
     @GetMapping("/byUsernameAndMinimizedName")

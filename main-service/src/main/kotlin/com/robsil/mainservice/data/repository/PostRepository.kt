@@ -25,4 +25,13 @@ interface PostRepository: JpaRepository<Post, Long> {
     @Query("select post from Post post left join fetch post.tags tag left join fetch post.board board where post.board.isPrivate = false order by case when tag.id in :tags then 1 else 0 end")
     fun findAllByTagsRelevant(tags: List<Long>): List<Post>
 
+    @Query("select post from Post post where post.board.user.username = :username")
+    fun findAllByUsername(username: String, pageable: Pageable): Page<Post>
+
+//    SELECT d FROM Like e INNER JOIN e.post d
+//    @Query("select like from Like like")
+//    @Query("select post from Post post inner join Like like where like.user.username = :username")
+    @Query("select p from Like l inner join l.post p where l.user.username = :username")
+    fun findAllLikedByUsername(username: String, pageable: Pageable): Page<Post>
+
 }
