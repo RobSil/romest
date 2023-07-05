@@ -32,3 +32,19 @@ export const validatePassword = (password: string, min: number): boolean => {
 
     return true
 }
+
+export const validateUsername = (username: string, min: number): boolean => {
+    if (username === "") {
+        return true
+    }
+
+    if (!username) {
+        return false
+    }
+
+    if (username.length < min || username.length > 32) {
+        return false
+    }
+
+    return true
+}

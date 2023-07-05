@@ -2,11 +2,11 @@ package com.robsil.mainservice.util.validators
 
 import com.robsil.mainservice.util.getExtensionIfSingleDot
 import com.robsil.mainservice.util.validators.annotations.MultipartFileImageConstraint
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
 import org.springframework.http.MediaType
 import org.springframework.util.MimeType
 import org.springframework.web.multipart.MultipartFile
-import javax.validation.ConstraintValidator
-import javax.validation.ConstraintValidatorContext
 
 class MultipartFileImageValidator: ConstraintValidator<MultipartFileImageConstraint, MultipartFile> {
     override fun isValid(value: MultipartFile?, context: ConstraintValidatorContext?): Boolean {

@@ -4,9 +4,9 @@ import com.robsil.mainservice.model.dto.BoardPickDto
 import com.robsil.mainservice.model.dto.CompleteBoardDto
 import com.robsil.mainservice.model.dto.SimpleBoardDto
 import com.robsil.mainservice.util.minimize
-import javax.persistence.*
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
+import jakarta.persistence.*
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 
 @Entity
 //@Table(name = "boards", uniqueConstraints = )

@@ -141,7 +141,7 @@ class SecurityConfig(
 
         http
             .authorizeRequests()
-            .antMatchers(
+            .requestMatchers(
                 "/api/v1/users/register",
                 "/api/login",
                 "/login"
@@ -154,7 +154,7 @@ class SecurityConfig(
         http
             .authorizeRequests()
 //            .anyRequest()
-            .antMatchers("/api/**")
+            .requestMatchers("/api/**")
             .authenticated()
 
 //        http

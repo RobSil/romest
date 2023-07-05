@@ -1,10 +1,7 @@
 package com.robsil.mainservice.controller
 
-import com.robsil.mainservice.model.dto.ComplexPostDto
-import com.robsil.mainservice.model.dto.LikeResponse
-import com.robsil.mainservice.model.dto.PostSaveDto
+import com.robsil.mainservice.model.dto.*
 import com.robsil.mainservice.model.dto.request.PostCreateRequest
-import com.robsil.mainservice.model.dto.SimplePostDto
 import com.robsil.mainservice.model.dto.request.LikePostRequest
 import com.robsil.mainservice.model.dto.request.PostSaveRequest
 import com.robsil.mainservice.model.exception.ForbiddenException
@@ -20,6 +17,9 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import jakarta.validation.Valid
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -35,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -48,10 +47,21 @@ class PostController(
 
     @GetMapping
     @Deprecated(message = "getAll - is intended only for testing purposes.", level = DeprecationLevel.WARNING)
-    fun getAll(): List<SimplePostDto> {
-        val posts = postServiceFacade.getAllByTagsRelevant().map { it.toSimpleDto() }
+    fun getAll(
+        principal: Principal?,
+        @RequestParam(required = false, defaultValue = "0") pageNumber: Int,
+        @RequestParam(required = false, defaultValue = "20") pageSize: Int,
+    ): ResponseEntity<ComplexPostPageableDto> {
+        val posts = postServiceFacade.getAllByTagsRelevant(userService.getByPrincipal(principal), PageRequest.of(pageNumber, pageSize))
+            .map { postServiceFacade.toComplexPostDto(it) }
 
-        return posts
+        return ResponseEntity(
+            ComplexPostPageableDto(
+                posts.toList(),
+                posts.totalElements,
+                posts.totalPages
+            ), HttpStatus.OK
+        )
     }
 
     @GetMapping("/{postId}")
@@ -60,8 +70,15 @@ class PostController(
     }
 
     @PostMapping("/{postId}/repin")
-    fun repinPost(@PathVariable postId: Long, @RequestParam boardId: Long, principal: Principal?): ResponseEntity<SimplePostDto> {
-        return ResponseEntity(postServiceFacade.repinPost(postId, boardId, userService.getByPrincipal(principal)).toSimpleDto(), HttpStatus.OK)
+    fun repinPost(
+        @PathVariable postId: Long,
+        @RequestParam boardId: Long,
+        principal: Principal?
+    ): ResponseEntity<SimplePostDto> {
+        return ResponseEntity(
+            postServiceFacade.repinPost(postId, boardId, userService.getByPrincipal(principal)).toSimpleDto(),
+            HttpStatus.OK
+        )
     }
 
     @PostMapping("/{postId}/toggleLike")

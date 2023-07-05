@@ -10,7 +10,7 @@ import {
     useToast
 } from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
-import {validateEmail, validatePassword} from "./LoginUtil";
+import {validateEmail, validatePassword, validateUsername} from "./LoginUtil";
 import AuthService from "../../services/AuthService";
 import {getUserData} from "../../redux/reducers/UserUtil";
 
@@ -21,10 +21,12 @@ const Registration: FC = () => {
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
+    const [username, setUsername] = useState<string>("")
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
 
     let isEmailError: boolean = validateEmail(email)
+    let isUsernameError: boolean = validateUsername(username, 2)
     let isPasswordError: boolean = validatePassword(password, 6)
 
     useEffect(() => {
@@ -56,7 +58,18 @@ const Registration: FC = () => {
             return
         }
 
-        AuthService.register({email, password})
+        if (!username || !validateUsername(username, 2)) {
+            toast({
+                title: 'Username is invalid.',
+                description: "Make sure that your password is fine.",
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            })
+            return
+        }
+
+        AuthService.register({username, email, password})
             .then((req) => {
                 if (req.request.status === 201) {
                     toast({
@@ -92,6 +105,15 @@ const Registration: FC = () => {
             }}>
                 <h1 style={{fontSize: "xx-large", fontWeight: "bold", marginBottom: "30px"}}>Registration form</h1>
                 <form>
+
+                    <FormControl isRequired isInvalid={!isEmailError}>
+                        <FormLabel>Username</FormLabel>
+                        <Input placeholder="Username" onChange={(e) => {
+                            setUsername(e.target.value)
+                            isUsernameError = validateUsername(e.target.value, 2)
+                        }}/>
+                        {!isUsernameError && (<FormErrorMessage>Username is invalid.</FormErrorMessage>)}
+                    </FormControl>
 
                     <FormControl isRequired isInvalid={!isEmailError}>
                         <FormLabel>Email</FormLabel>

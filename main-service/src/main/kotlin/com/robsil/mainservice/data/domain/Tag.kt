@@ -1,7 +1,7 @@
 package com.robsil.mainservice.data.domain
 
 import com.robsil.mainservice.model.dto.TagDto
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "tags")

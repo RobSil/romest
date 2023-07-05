@@ -6,9 +6,10 @@ import {SimpleBoardDto} from "../../services/requests/BoardRequests";
 import {ComplexPostDto, ComplexPostPageableDto} from "../../services/requests/PostRequest";
 import PostCard from "../post/PostCard";
 import {Box} from "@chakra-ui/react";
+import ReactPaginate from "react-paginate";
 
 export enum SpecialUserBoardView {
-    DEFAULT, ALL_POSTS, LIKED
+    DEFAULT, ALL_POSTS, LIKED, RELEVANT
 }
 
 export interface UserBoardViewProps {
@@ -25,22 +26,7 @@ const UserBoardView: FC<UserBoardViewProps> = (props) => {
     const [pageNumber, setPageNumber] = useState(0)
     const [pageSize, setPageSize] = useState(20)
 
-    useEffect(() => {
-        if (props.isSpecial != SpecialUserBoardView.DEFAULT) {
-            BoardService.getByUsernameAndMinimizedName(username!, minimizedName!)
-                .then(req => {
-                    if (req.request.status === 200) {
-                        setBoard(req.data)
-                    }
-                })
-        } else {
-            setBoard({
-                minimizedName: props.isSpecial.toString(),
-                name: props.isSpecial.toString(),
-                isPrivate: true, id: 0
-            })
-        }
-
+    const fetchPosts = () => {
         switch (props.isSpecial) {
             case SpecialUserBoardView.DEFAULT:
                 PostService.getByUsernameAndBoardMinimizedName(username!, minimizedName!, pageNumber, pageSize)
@@ -66,9 +52,37 @@ const UserBoardView: FC<UserBoardViewProps> = (props) => {
                         }
                     })
                 break
+            case SpecialUserBoardView.RELEVANT:
+                PostService.getAllRelevant(pageNumber, pageSize)
+                    .then(req => {
+                        if (req.request.status === 200) {
+                            setPostPageable(req.data)
+                        }
+                    })
 
         }
+    }
+
+    useEffect(() => {
+        if (props.isSpecial != SpecialUserBoardView.DEFAULT) {
+            BoardService.getByUsernameAndMinimizedName(username!, minimizedName!)
+                .then(req => {
+                    if (req.request.status === 200) {
+                        setBoard(req.data)
+                    }
+                })
+        } else {
+            setBoard({
+                minimizedName: props.isSpecial.toString(),
+                name: props.isSpecial.toString(),
+                isPrivate: true, id: 0
+            })
+        }
     }, [])
+
+    useEffect(() => {
+        fetchPosts()
+    }, [pageNumber])
 
     return (
         <>
@@ -79,6 +93,8 @@ const UserBoardView: FC<UserBoardViewProps> = (props) => {
                     return (<PostCard post={post} cursor={"pointer"}/>)
                 })) : null}
             </Box>
+
+            <ReactPaginate pageCount={postPageable ? postPageable.totalPages : 0} onPageChange={(pageNumber) => setPageNumber(pageNumber.selected)} />
 
         </>
     )

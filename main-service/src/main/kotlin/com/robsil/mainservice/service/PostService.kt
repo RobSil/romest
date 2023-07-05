@@ -19,9 +19,8 @@ interface PostService {
     fun getAllByBoardId(boardId: Long, pageable: Pageable): Page<Post>
     fun getAllByBoard(board: Board): List<Post>
 
-    fun getAllByTagsRelevant(tags: List<Long>): List<Post>
-
-    fun getAllByTagsRelevant(tags: List<Long>, userId: Long): List<Post>
+    fun getAllByTagsRelevant(tags: List<Long>, pageable: Pageable): Page<Post>
+    fun getAllByTagsRelevant(tags: List<Long>, userId: Long, pageable: Pageable): Page<Post>
 
     fun getAllByUsername(username: String, pageable: Pageable): Page<Post>
     fun getAllLikedByUsername(username: String, pageable: Pageable): Page<Post>

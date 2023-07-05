@@ -20,9 +20,5 @@ interface PostServiceFacade {
 
     fun deletePost(postId: Long): Unit
 
-    fun getAllByTagsRelevant(): List<Post>
-
-    fun getAllByUsername(username: String, pageable: Pageable): Page<Post>
-
-    fun getAllLikedByUsername(username: String, pageable: Pageable): Page<Post>
+    fun getAllByTagsRelevant(user: User, pageable: Pageable): Page<Post>
 }

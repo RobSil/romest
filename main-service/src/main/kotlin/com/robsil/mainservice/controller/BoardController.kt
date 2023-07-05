@@ -8,12 +8,12 @@ import com.robsil.mainservice.service.UserService
 import com.robsil.mainservice.service.facade.BoardServiceFacade
 import com.robsil.mainservice.service.facade.PostServiceFacade
 import com.robsil.mainservice.util.dtoFactories.toSimpleDto
+import jakarta.validation.constraints.NotNull
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
-import javax.validation.constraints.NotNull
 
 @RestController
 @RequestMapping("/api/v1/boards")

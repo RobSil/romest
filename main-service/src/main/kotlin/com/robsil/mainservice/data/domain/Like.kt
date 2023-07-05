@@ -2,8 +2,10 @@ package com.robsil.mainservice.data.domain
 
 import com.robsil.mainservice.model.dto.LikeDto
 import com.robsil.mainservice.util.dtoFactories.toSimpleDto
-import javax.persistence.*
-import javax.validation.constraints.NotNull
+import jakarta.persistence.Entity
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.Table
 
 @Entity
 @Table(name = "likes")

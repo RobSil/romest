@@ -2,21 +2,21 @@ package com.robsil.mainservice.model
 
 import com.robsil.mainservice.model.dto.SimplePhotoDto
 import org.hibernate.validator.constraints.Length
-import javax.validation.constraints.Email
-import javax.validation.constraints.NotBlank
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotBlank
 
 data class UserRegisterDto(
 
-    @NotBlank
-    @Length(min = 4, max = 32)
+    @field:NotBlank
+    @field:Length(min = 4, max = 32)
     val username: String,
 
-    @NotBlank
-    @Email
+    @field:NotBlank
+    @field:Email
     val email: String,
 
-    @NotBlank
-    @Length(min = 6, max = 32)
+    @field:NotBlank
+    @field:Length(min = 6, max = 32)
     val password: String
 )
 

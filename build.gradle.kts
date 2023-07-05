@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val mockkVersion: String by properties
 val jacksonDatatypeJsr310Version: String by properties
@@ -7,42 +8,37 @@ val datafakerVersion: String by properties
 val okHttpVersion: String by properties
 
 plugins {
-	id("org.springframework.boot") version "2.7.1"
-	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	kotlin("jvm") version "1.7.20"
-	kotlin("plugin.spring") version "1.7.20"
-//	kotlin("plugin.jpa") version "1.7.20"
-	id("org.jetbrains.kotlin.plugin.jpa") version "1.7.20"
-	kotlin("plugin.noarg") version "1.7.20"
+	id("org.springframework.boot") version "3.1.1"
+	id("io.spring.dependency-management") version "1.1.0"
+	kotlin("jvm") version "1.8.22"
+	kotlin("plugin.spring") version "1.8.22"
 }
 
-noArg {
-	annotations("javax.persistence.Entity")
+group = "com.robsil"
+version = "0.0.1-SNAPSHOT"
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
 }
 
-buildDir = File("./build")
+configurations {
+	compileOnly {
+		extendsFrom(configurations.annotationProcessor.get())
+	}
+}
+
+
 
 allprojects {
-
-	apply(plugin = "org.jetbrains.kotlin.jvm")
-	apply(plugin = "org.springframework.boot")
-	apply(plugin = "io.spring.dependency-management")
-	apply(plugin = "kotlin-spring")
-	apply(plugin = "kotlin-jpa")
-
-
 	repositories {
 		mavenCentral()
 		maven("https://jitpack.io")
 	}
 
-	group = "com.robsil"
-	version = "0.0.1-SNAPSHOT"
-	java.sourceCompatibility = JavaVersion.VERSION_17
-
-	tasks.withType<Test> {
-		useJUnitPlatform()
-	}
+	apply(plugin = "org.jetbrains.kotlin.jvm")
+	apply(plugin = "org.springframework.boot")
+	apply(plugin = "io.spring.dependency-management")
+	apply(plugin = "kotlin-spring")
 
 	dependencies {
 
@@ -55,19 +51,8 @@ allprojects {
 		implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
 		implementation("org.jetbrains.kotlin:kotlin-reflect")
-		implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
 		implementation("org.apache.logging.log4j:log4j-api-kotlin:$log4jApiKotlinVersion")
-
-
-
-		testImplementation("org.springframework.boot:spring-boot-starter-test")
-		testImplementation("io.mockk:mockk:$mockkVersion")
-	}
-}
-
-project("main-service") {
-	dependencies {
 
 		implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 		implementation("org.springframework.boot:spring-boot-starter-data-redis")
@@ -95,22 +80,19 @@ project("main-service") {
 
 		runtimeOnly("org.postgresql:postgresql")
 
+
+
+
+		testImplementation("org.springframework.boot:spring-boot-starter-test")
+		testImplementation("io.mockk:mockk:$mockkVersion")
 	}
 }
 
-project("hello-service") {
-
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+tasks.withType<KotlinCompile> {
 	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
+		freeCompilerArgs += "-Xjsr305=strict"
 		jvmTarget = "17"
 	}
-}
-
-tasks.named("compileKotlin") {
-	inputs.files(tasks.named("processResources"))
 }
 
 tasks.withType<Test> {

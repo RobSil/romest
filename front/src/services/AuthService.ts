@@ -42,7 +42,7 @@ export default class AuthService {
     }
 
     static async register(dto: UserRegistrationRequest) {
-        return $api.post("/api/v1/users/register", {email: dto.email, password: dto.password})
+        return $api.post("/api/v1/users/register", {username: dto.username, email: dto.email, password: dto.password})
     }
 
     static async refresh(): Promise<AxiosResponse<UserInformationDto>> {

@@ -21,6 +21,8 @@ import com.robsil.mainservice.service.facade.PhotoServiceFacade
 import com.robsil.mainservice.service.facade.PostServiceFacade
 import com.robsil.mainservice.util.compareToOrElseThrow
 import org.apache.logging.log4j.kotlin.logger
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -82,24 +84,23 @@ class PostServiceFacadeImpl(
         return newPost
     }
 
-    override fun getAllByTagsRelevant(): List<Post> {
-        val user = userService.getCurrentUser()
+    override fun getAllByTagsRelevant(user: User, pageable: Pageable): Page<Post> {
 
         try {
-            val postIds = likeService.findAllPostIdsByUserId(user.id!!)
+            val likedPostIds = likeService.findAllPostIdsByUserId(user.id!!)
 
-            if (postIds.isEmpty()) throw IllegalArgumentException("empty list of args, postIds is empty")
+//            if (likedPostIds.isEmpty()) throw IllegalArgumentException("empty list of args, postIds is empty")
 
-            val tagIds = tagService.getAllIdsByPostIds(postIds)
+            val likedTagIds = tagService.getAllIdsByPostIds(likedPostIds)
 
-            if (tagIds.isEmpty()) throw IllegalArgumentException("empty list of args, tagIds is empty")
+//            if (likedTagIds.isEmpty()) throw IllegalArgumentException("empty list of args, tagIds is empty")
 
 //            return postService.getAllByTagsRelevant(tagIds, user.id!!)
-            return postService.getAllByTagsRelevant(tagIds)
+            return postService.getAllByTagsRelevant(likedTagIds, pageable)
         } catch (e: IllegalArgumentException) {
             if (e.message == "empty list of args") {
                 log.info("getAllByTagsRelevant: returning empty list of args")
-                return listOf()
+                return Page.empty()
             }
 
             throw e

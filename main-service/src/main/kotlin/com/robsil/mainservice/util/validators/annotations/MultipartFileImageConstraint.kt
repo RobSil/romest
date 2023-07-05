@@ -1,7 +1,7 @@
 package com.robsil.mainservice.util.validators.annotations
 
 import com.robsil.mainservice.util.validators.MultipartFileImageValidator
-import javax.validation.Constraint
+import jakarta.validation.Constraint
 
 @MustBeDocumented
 @Constraint(validatedBy = [MultipartFileImageValidator::class])

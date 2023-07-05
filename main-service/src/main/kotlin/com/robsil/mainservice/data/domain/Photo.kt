@@ -1,9 +1,9 @@
 package com.robsil.mainservice.data.domain
 
 import com.robsil.mainservice.model.enum.StoringSource
+import jakarta.persistence.*
+import jakarta.validation.constraints.NotNull
 import java.lang.IllegalArgumentException
-import javax.persistence.*
-import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "photos")

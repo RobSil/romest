@@ -43,6 +43,15 @@ export default class PostService {
         })
     }
 
+    static async getAllRelevant(pageNumber: number, pageSize: number): Promise<AxiosResponse<ComplexPostPageableDto>> {
+        return $api.get(`${postApiPrefix}`, {
+            params: {
+                pageNumber,
+                pageSize
+            }
+        })
+    }
+
     static async getById(id: number): Promise<AxiosResponse<ComplexPostDto>> {
         return $api.get(postApiPrefix + "/" + id.toString())
     }

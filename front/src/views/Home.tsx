@@ -2,10 +2,10 @@ import {FC, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../redux/reduxUtil";
 import {useNavigate} from "react-router-dom";
 import {Button, useDisclosure} from "@chakra-ui/react";
-import AuthService from "../services/AuthService";
 import {logout} from "../redux/reducers/ActionCreators";
 import {getUserData} from "../redux/reducers/UserUtil";
 import BoardCreateModal from "./modals/BoardCreateModal";
+import UserBoardView, {SpecialUserBoardView} from "./board/UserBoardView";
 
 const Home: FC = () => {
 
@@ -33,6 +33,8 @@ const Home: FC = () => {
             <h1>Just an empty header for now.</h1>
             <h1>Hello, {userData?.username}</h1>
             <Button onClick={onOpen}>Create board</Button>
+
+            <UserBoardView isSpecial={SpecialUserBoardView.RELEVANT} />
 
             <BoardCreateModal isOpen={isOpen} onClose={onClose} />
         </div>

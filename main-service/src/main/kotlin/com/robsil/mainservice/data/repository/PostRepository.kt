@@ -19,11 +19,11 @@ interface PostRepository: JpaRepository<Post, Long> {
 
     // find all posts by tags, sort (prioritize?) by user's tags, and it shouldn't be the posts in the private boards | post.board.isPrivate = false
     // given: list of tags ids, user id
-    @Query("select post from Post post left join fetch post.tags tag left join fetch post.board board where ((post.board.user.id <> :userId) and (post.board.isPrivate = false)) order by case when tag.id in :tags then 1 else 0 end")
-    fun findAllByTagsRelevant(tags: List<Long>, userId: Long): List<Post>
+    @Query("select post from Post post left join post.tags tag left join post.board board where ((post.board.user.id <> :userId) and (post.board.isPrivate = false)) order by case when tag.id in :tags then 1 else 0 end")
+    fun findAllByTagsRelevant(tags: List<Long>, userId: Long, pageable: Pageable): Page<Post>
 
-    @Query("select post from Post post left join fetch post.tags tag left join fetch post.board board where post.board.isPrivate = false order by case when tag.id in :tags then 1 else 0 end")
-    fun findAllByTagsRelevant(tags: List<Long>): List<Post>
+    @Query("select post from Post post left join post.tags tag left join post.board board where post.board.isPrivate = false order by case when tag.id in :tags then 100 else 0 end")
+    fun findAllByTagsRelevant(tags: List<Long>, pageable: Pageable): Page<Post>
 
     @Query("select post from Post post where post.board.user.username = :username")
     fun findAllByUsername(username: String, pageable: Pageable): Page<Post>

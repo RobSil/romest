@@ -5,9 +5,9 @@ import com.robsil.mainservice.model.ComplexUserDto
 import com.robsil.mainservice.model.UserSimpleDto
 import com.robsil.mainservice.model.dto.request.PostSaveRequest
 import org.hibernate.validator.constraints.Length
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Size
 
 data class PostCreateDto(
     @field:NotBlank

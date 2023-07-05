@@ -61,12 +61,12 @@ class PostServiceImpl(
         return postRepository.findAllByBoardIdPageable(boardId, pageable)
     }
 
-    override fun getAllByTagsRelevant(tags: List<Long>, userId: Long): List<Post> {
-        return postRepository.findAllByTagsRelevant(tags, userId)
+    override fun getAllByTagsRelevant(tags: List<Long>, userId: Long, pageable: Pageable): Page<Post> {
+        return postRepository.findAllByTagsRelevant(tags, userId, pageable)
     }
 
-    override fun getAllByTagsRelevant(tags: List<Long>): List<Post> {
-        return postRepository.findAllByTagsRelevant(tags)
+    override fun getAllByTagsRelevant(tags: List<Long>, pageable: Pageable): Page<Post> {
+        return postRepository.findAllByTagsRelevant(tags, pageable)
     }
 
     override fun getAllByUsername(username: String, pageable: Pageable): Page<Post> {
