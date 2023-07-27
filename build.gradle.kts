@@ -8,11 +8,12 @@ val datafakerVersion: String by properties
 val okHttpVersion: String by properties
 
 plugins {
-	id("org.springframework.boot") version "3.1.1"
+	id("org.springframework.boot") version "3.0.1"
 	id("io.spring.dependency-management") version "1.1.0"
-	kotlin("plugin.noarg") version "1.7.20"
-	kotlin("jvm") version "1.8.22"
-	kotlin("plugin.spring") version "1.8.22"
+	kotlin("jvm") version "1.8.0"
+	kotlin("plugin.spring") version "1.8.0"
+	kotlin("plugin.jpa") version "1.8.0"
+	kotlin("plugin.allopen") version "1.8.0"
 }
 
 group = "com.robsil"
