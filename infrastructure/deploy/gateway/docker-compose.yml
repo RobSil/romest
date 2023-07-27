@@ -11,10 +11,8 @@ services:
       - ./static:/var/www/static
       - ./gateway.nginx:/etc/nginx/conf.d/gateway.conf
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./start-nginx.sh:/etc/nginx/start-nginx.sh
       - ../certbot/conf:/etc/letsencrypt
       - ../certbot/www:/var/www/certbot
-#    command: /bin/bash -c  "chmod +x /etc/nginx/*.sh && /etc/nginx/start-nginx.sh"
     logging:
       driver: "json-file"
       options:

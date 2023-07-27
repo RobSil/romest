@@ -1,8 +1,6 @@
 package com.robsil.mainservice.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.robsil.mainservice.data.repository.UserRepository
-import com.robsil.mainservice.model.UserInformationDto
 import com.robsil.mainservice.model.exception.NotFoundException
 import com.robsil.mainservice.model.exception.UnauthorizedException
 import com.robsil.mainservice.service.UserService
@@ -20,10 +18,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.security.crypto.factory.PasswordEncoderFactories
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-import java.security.Principal
 
 
 @Configuration

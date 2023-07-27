@@ -40,35 +40,6 @@ class Board(
         this.id = id
     }
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//        name = "posts_boards",
-//        joinColumns = arrayOf(JoinColumn(name = "board_id", referencedColumnName = "id")),
-//        inverseJoinColumns = arrayOf(JoinColumn(name = "post_id", referencedColumnName = "id"))
-//    )
-//    val posts: MutableSet<Post> = mutableSetOf()
-
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "board_id", referencedColumnName = "id")
-//    @JsonIdentityInfo(property = "id", generator = ObjectIdGenerators.PropertyGenerator::class)
-//    val posts: Set<Post> = mutableSetOf()
-
-//    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
-//    @JsonSerialize(using = SimpleListPostSerializer::class)
-//    val posts: List<Post> = mutableListOf()
-
-//    fun addPost(post: Post): Set<Post> {
-//        posts.add(post)
-//
-//        return posts
-//    }
-//
-//    fun removePost(post: Post): Set<Post> {
-//        posts.remove(post)
-//
-//        return posts
-//    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -89,8 +60,6 @@ class Board(
 
     fun toSimpleDto(): SimpleBoardDto {
         return SimpleBoardDto(this.id, this.name, this.minimizedName, this.isPrivate)
-//    return if (this.id != null) SimpleBoardDto(this.id, this.name, this.isPrivate)
-//    else SimpleBoardDto(-1L, this.name, this.isPrivate)
     }
 
     fun toCompleteDto(): CompleteBoardDto {

@@ -3,31 +3,6 @@ import {UserInformationDto, UserRegistrationRequest} from "./dtos/UserDtos";
 import {AxiosResponse} from "axios";
 
 
-import {FC} from "react";
-
-// const AuthService: FC = () => {
-//
-//     const dispatch = useAppDispatch()
-//
-//     const login = (email: string, password: string): Promise<AxiosResponse<UserInformationDto>> => {
-//         const promise = $api.post("/api/login", null, {params: {username: email, password: password}})
-//
-//         promise.then((req) => {
-//             if (req.request.status === 200) {
-//
-//             }
-//         })
-//
-//         return promise
-//     }
-//
-//     const logout = (): Promise<any> => {
-//         return $api.get("/api/logout")
-//     }
-// }
-
-// export default AuthService
-
 export default class AuthService {
 
     // we actually need here only the status code.

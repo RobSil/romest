@@ -1,9 +1,7 @@
 package com.robsil.mainservice.controller
 
 import com.robsil.mainservice.model.dto.LikeDto
-import com.robsil.mainservice.model.dto.SimplePostDto
 import com.robsil.mainservice.model.dto.request.LikePostRequest
-import com.robsil.mainservice.model.exception.ForbiddenException
 import com.robsil.mainservice.model.exception.NotFoundException
 import com.robsil.mainservice.service.LikeService
 import com.robsil.mainservice.service.facade.LikeServiceFacade

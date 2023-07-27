@@ -48,11 +48,6 @@ class PropertyServiceImpl(
             property = Property(name, value)
         }
 
-//        if (property == null) {
-//            log.error("propertyService set: somehow unreachable statement occurred. Name: $name, value: $value")
-//            throw HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR)
-//        }
-
         return property
     }
 }

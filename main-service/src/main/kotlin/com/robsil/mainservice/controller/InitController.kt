@@ -23,10 +23,6 @@ class InitController(
         initService.fullInit()
     }
 
-    @GetMapping("/redis")
-    private fun testRedis() {
-    }
-
     @GetMapping("/generatePosts")
     private fun generatePosts(@RequestParam count: Int, boardId: Long) = initService.generatePosts(count, boardId)
 }

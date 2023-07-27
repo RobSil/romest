@@ -1,7 +1,6 @@
 import {BoardCreateRequest, BoardPickDto, CompleteBoardDto, SimpleBoardDto} from "./requests/BoardRequests";
 import $api from "./axios";
 import {AxiosResponse} from "axios";
-import {ComplexPostPageableDto} from "./requests/PostRequest";
 
 
 export const boardApiPrefix = "/api/v1/boards"

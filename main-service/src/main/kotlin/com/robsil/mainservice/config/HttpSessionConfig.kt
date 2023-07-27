@@ -4,8 +4,6 @@ import org.apache.logging.log4j.kotlin.logger
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.RedisConnectionFactory
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory
-import org.springframework.data.redis.core.RedisOperations
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import org.springframework.session.data.redis.RedisIndexedSessionRepository
@@ -32,14 +30,5 @@ class HttpSessionConfig {
     fun redisIndexedSessionRepository(redisTemplate: RedisTemplate<String, Any>): RedisIndexedSessionRepository {
         return RedisIndexedSessionRepository(redisTemplate)
     }
-
-//    fun sessionRepository(rcf: RedisConnectionFactory): RedisOperationsSessionRepository {
-//        return RedisOperationsSessionRepository(rcf)
-//    }
-
-//    @Bean
-//    fun sessionRegistry(sessionRepo: RedisIndexedSessionRepository): SessionRegistry {
-//        return SpringSessionBackedSessionRegistry(sessionRepo)
-//    }
 
 }

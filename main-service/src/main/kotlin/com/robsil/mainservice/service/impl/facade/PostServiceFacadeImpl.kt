@@ -89,13 +89,8 @@ class PostServiceFacadeImpl(
         try {
             val likedPostIds = likeService.findAllPostIdsByUserId(user.id!!)
 
-//            if (likedPostIds.isEmpty()) throw IllegalArgumentException("empty list of args, postIds is empty")
-
             val likedTagIds = tagService.getAllIdsByPostIds(likedPostIds)
 
-//            if (likedTagIds.isEmpty()) throw IllegalArgumentException("empty list of args, tagIds is empty")
-
-//            return postService.getAllByTagsRelevant(tagIds, user.id!!)
             return postService.getAllByTagsRelevant(likedTagIds, pageable)
         } catch (e: IllegalArgumentException) {
             if (e.message == "empty list of args") {
@@ -112,8 +107,6 @@ class PostServiceFacadeImpl(
         val board: Board = boardService.getById(dto.boardId)
 
         val photo = photoServiceFacade.save(board.minimizedName, multipartFile)
-
-//        var post = Post(dto.title, dto.text, board, photo)
 
         val tags = mutableSetOf<Tag>()
 

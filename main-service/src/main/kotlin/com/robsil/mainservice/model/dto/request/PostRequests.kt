@@ -1,7 +1,6 @@
 package com.robsil.mainservice.model.dto.request
 
 import org.hibernate.validator.constraints.Length
-import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 

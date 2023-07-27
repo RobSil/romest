@@ -34,11 +34,6 @@ class PostServiceImpl(
 
     val log = logger()
 
-    @Deprecated("getAll - is intended only for testing purposes.", level = DeprecationLevel.WARNING)
-    override fun getAll(): List<Post> {
-        return postRepository.findAll()
-    }
-
     override fun getById(id: Long): Post {
         return postRepository.findById(id).orElse(null)
             ?: run {

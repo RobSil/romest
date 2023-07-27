@@ -18,8 +18,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -44,25 +42,6 @@ class PostController(
     private val postService: PostService,
     private val userService: UserService,
 ) {
-
-    @GetMapping
-    @Deprecated(message = "getAll - is intended only for testing purposes.", level = DeprecationLevel.WARNING)
-    fun getAll(
-        principal: Principal?,
-        @RequestParam(required = false, defaultValue = "0") pageNumber: Int,
-        @RequestParam(required = false, defaultValue = "20") pageSize: Int,
-    ): ResponseEntity<ComplexPostPageableDto> {
-        val posts = postServiceFacade.getAllByTagsRelevant(userService.getByPrincipal(principal), PageRequest.of(pageNumber, pageSize))
-            .map { postServiceFacade.toComplexPostDto(it) }
-
-        return ResponseEntity(
-            ComplexPostPageableDto(
-                posts.toList(),
-                posts.totalElements,
-                posts.totalPages
-            ), HttpStatus.OK
-        )
-    }
 
     @GetMapping("/{postId}")
     fun getById(@PathVariable postId: Long): ResponseEntity<ComplexPostDto> {

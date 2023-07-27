@@ -8,7 +8,6 @@ import com.robsil.mainservice.model.exception.ExceptionMessages
 import com.robsil.mainservice.model.exception.ForbiddenException
 import com.robsil.mainservice.model.exception.NotFoundException
 import com.robsil.mainservice.service.BoardService
-import com.robsil.mainservice.service.PhotoService
 import com.robsil.mainservice.service.PostService
 import com.robsil.mainservice.service.UserService
 import com.robsil.mainservice.service.facade.BoardServiceFacade

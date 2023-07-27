@@ -9,9 +9,6 @@ import org.springframework.data.domain.Pageable
 
 interface PostService {
 
-    @Deprecated(message = "getAll - is intended only for testing purposes.", level = DeprecationLevel.WARNING)
-    fun getAll(): List<Post>
-
     fun getById(id: Long): Post
 
     fun getAllByBoardId(boardId: Long): List<Post>

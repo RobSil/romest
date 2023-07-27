@@ -10,8 +10,4 @@ class FileController(
     private val fileService: FileService
 ) {
 
-//    @GetMapping("/test")
-//    fun testFileSystem(multipartFile: MultipartFile) {
-//        fileService.save(Path.of(""))
-//    }
 }

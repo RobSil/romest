@@ -1,4 +1,4 @@
-import {FC, ReactElement, ReactNode} from "react";
+import {FC, ReactElement} from "react";
 import AuthService from "../../services/AuthService";
 import {userSlice} from "../../redux/reducers/UserSlice";
 import {useAppDispatch} from "../../redux/reduxUtil";

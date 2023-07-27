@@ -21,7 +21,6 @@ class TagServiceImpl(
     override fun getByTitle(title: String): Tag {
         return tagRepository.findByTitle(title)
             ?: run {
-//                log.info("userService getByEmail: user not found. Email: $email")
                 throw NotFoundException("TAG_NOT_FOUND")
             }
     }

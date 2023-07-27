@@ -2,7 +2,6 @@ package com.robsil.mainservice.model.dto
 
 import com.robsil.mainservice.data.domain.Tag
 import com.robsil.mainservice.model.ComplexUserDto
-import com.robsil.mainservice.model.UserSimpleDto
 import com.robsil.mainservice.model.dto.request.PostSaveRequest
 import org.hibernate.validator.constraints.Length
 import jakarta.validation.constraints.NotBlank

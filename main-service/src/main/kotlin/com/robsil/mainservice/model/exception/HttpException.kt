@@ -1,7 +1,6 @@
 package com.robsil.mainservice.model.exception
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import java.time.LocalDateTime
 
 @JsonIgnoreProperties("cause", "stackTrace", "suppressed", "localizedMessage", "trace")
 abstract class HttpException: RuntimeException {

@@ -4,7 +4,6 @@ import com.robsil.mainservice.model.dto.LikeDto
 import com.robsil.mainservice.model.dto.TagDto
 import com.robsil.mainservice.model.dto.request.TagCreateRequest
 import com.robsil.mainservice.model.exception.DataUniqueViolationException
-import com.robsil.mainservice.model.exception.NotFoundException
 import com.robsil.mainservice.service.TagService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content

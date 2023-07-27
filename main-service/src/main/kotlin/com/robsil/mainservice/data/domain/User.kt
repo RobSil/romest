@@ -45,8 +45,6 @@ class User(
     )
     var roles: MutableSet<Role> = mutableSetOf()
 
-//    var likes: MutableSet<Like> = mutableSetOf()
-
     fun addRole(role: Role): Set<Role> {
 
         roles.add(role)

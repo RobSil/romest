@@ -40,9 +40,6 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SPRING_REDIS_HOST: redis
-#      appMode: stage
-#      baseHost: https://stage.mobile.proxy-seller.com
-#      spring_data_mongodb_host: mongodb
     command: /bin/sh -c "cd /gjava && chmod +x /gjava/*.jar && java -jar /gjava/java.jar"
     ports:
       - "127.0.0.1:2101:8081"
@@ -65,29 +62,3 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}"
         max-size: 256m
-#  mongodb:
-#    platform: linux/x86_64
-#    image: mongo:5.0.12
-#    ports:
-#      - "27017:27017"
-#    volumes:
-#      - ../mongodb/data:/data/db
-##      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
-#    logging:
-#      driver: "json-file"
-#      options:
-#        tag: "{{.ImageName}}|{{.Name}}"
-#        max-size: 256m
-#  frontservice:
-#    image: nginx:1.23.1
-#    volumes:
-#      - ./front:/usr/share/nginx/html
-#      - ../files:/usr/share/nginx/html/files
-#      - ./gateway/nginx.front.conf:/etc/nginx/nginx.conf
-#    ports:
-#      - "127.0.0.1:2101:80"
-#    logging:
-#      driver: "json-file"
-#      options:
-#        tag: "{{.ImageName}}|{{.Name}}"
-#        max-size: 256m
